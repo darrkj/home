@@ -371,8 +371,13 @@ cliques(ipulp, min = 6, max = 7)</code></pre>
 
 
 library(d3Network)</code></pre>
-<p>Now we can just use one of the network plots provided by the package and we get an interactive network that is quite fun to play with. For some reason it works in my browser but as soon as I put it in blogger it vanishes. I need to spend some time tracking this down where this goes wrong.</p>
+<p>Now we can just use one of the network plots provided by the package and we get an interactive network that is quite fun to play with.</p>
+
 <pre class="r"><code>d3SimpleNetwork(igraph_2_d3(ipulp))</code></pre>
+
+<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/grf" width="700" height="450"></iframe></div>
+
+
 <p>We can add more details by changing the the size and color of nodes and edges to have certain features from out analysis, for instance size the nodes by there closeness and color them to differentiate the 7-clique from the rest of the network.</p>
 <p>If you are using RStudio you can use this function to make the plot appear in the viewer, which is very useful having everything in one IDE.</p>
 <pre class="r"><code>d3plot &lt;- function(network, h = 300, w = 700) {
@@ -388,9 +393,6 @@ library(d3Network)</code></pre>
 }
 
 d3plot(barabasi.game(20))</code></pre>
-
-
-<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/grf" width="700" height="450"></iframe></div>
 
 
 
