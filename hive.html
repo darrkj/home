@@ -99,7 +99,7 @@ var svg = d3.select("#chart").append("svg")
     .attr("transform", "translate(" + outerRadius * .20 + "," + outerRadius * .57 + ")");
 
 // Load the data and display the plot!
-d3.json("flare.json", function(nodes) {
+d3.json("flare.JSON", function(nodes) {
   var nodesByName = {},
       links = [],
       formatNumber = d3.format(",d"),
