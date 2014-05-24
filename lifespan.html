@@ -348,7 +348,12 @@ summary(kms)</code></pre>
 ##    23      2       1 0.000252 0.000252     3.55e-05      0.00179
 ##    29      1       1 0.000000      NaN           NA           NA</code></pre>
 <pre class="r"><code>plot(kms, xlab = 'Seasons', ylab = 'Survival Probability')</code></pre>
+
+<pre class="r"><code>
 <div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-d4AvkXTNO24/Uy70nfhCKUI/AAAAAAAAAEM/p-f7bRhEVD0/s3200/nbalifespan1.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/-d4AvkXTNO24/Uy70nfhCKUI/AAAAAAAAAEM/p-f7bRhEVD0/s1600/nbalifespan1.png" /></a></div>
+</code></pre>
+
+
 <p>This is pretty interesting, there is a big drop off in the first year. This seems plan out, thus experience is good. That sounds a bit odd though. Lets add a players position to see if they are all similar.</p>
 <pre class="r"><code>kms &lt;- survfit(Surv(res$span, res$event) ~ res$positon)
 summary(kms)</code></pre>
@@ -425,7 +430,10 @@ summary(kms)</code></pre>
 ##    20      2       1 0.000611 0.000611     8.61e-05      0.00433
 ##    29      1       1 0.000000      NaN           NA           NA</code></pre>
 <pre class="r"><code>plot(kms, xlab = 'Seasons', ylab = 'Survival Probability')</code></pre>
+
+<pre class="r"><code>
 <div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-Rqeclz4WnaA/Uy70nUbY_DI/AAAAAAAAAEU/n9-ieR0ul2k/s3200/nbalifespan2.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/-Rqeclz4WnaA/Uy70nUbY_DI/AAAAAAAAAEU/n9-ieR0ul2k/s1600/nbalifespan2.png" /></a></div>
+</code></pre>
 <p>This is very interesting. Centers have a noticeably longer lifespan than either a guard or forward. Is this because there is more of a need. New shooting guards come out of college every year. Very tall centers are more rare. Could it also be point guards and forwards are running around more thus a younger faster player will be better, whereas height is centers real advantage. I have no idea but this is very interesting.</p>
 <p>What about the number of games you average in a season?</p>
 <pre class="r"><code>kms &lt;- survfit(Surv(res$span, res$event) ~ res$gamBin)
@@ -480,7 +488,12 @@ summary(kms)</code></pre>
 ##    20      2       1 0.000469 0.000469     6.61e-05      0.00333
 ##    29      1       1 0.000000      NaN           NA           NA</code></pre>
 <pre class="r"><code>plot(kms, xlab = 'Seasons', ylab = 'Survival Probability')</code></pre>
+
+<pre class="r"><code>
 <div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-ZW-xvltydCQ/Uy70nZdGyrI/AAAAAAAAAEQ/_x2wD0U1IPw/s3200/nbalifespan3.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/-ZW-xvltydCQ/Uy70nZdGyrI/AAAAAAAAAEQ/_x2wD0U1IPw/s1600/nbalifespan3.png" /></a></div>
+</code></pre>
+
+
 <p>This is not as surprising. If you play a lot of games in a season you can expect to have a larger chance of playing next year. But it does verify what my thoughts would have been. Plenty of times looking at data I see things I would expect to be true end up being nowhere near correct, it is usually in those times when you learn something useful as well.</p>
 <h3 id="final-thoughts">Final thoughts</h3>
 <p>I think this was interesting from the standpoint of NBA players but also refreshing myself to survival analysis. I want to look at points and playoffs as a next step but need some more time gather and clean data. I also want to look at two different types of outcomes in a player’s lifespan, can we see when a player is traded compared to no longer playing in general.</p>
