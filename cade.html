@@ -5,135 +5,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="x-ua-compatible" content="IE=9" >
 
-<title>Getting setup</title>
+<title>CADE</title>
 
-<style type="text/css">
-body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 12px;
-   margin: 8px;
-}
-
-tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
-}
-
-h1 { 
-   font-size:2.2em; 
-}
-
-h2 { 
-   font-size:1.8em; 
-}
-
-h3 { 
-   font-size:1.4em; 
-}
-
-h4 { 
-   font-size:1.0em; 
-}
-
-h5 { 
-   font-size:0.9em; 
-}
-
-h6 { 
-   font-size:0.8em; 
-}
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
-}
-
-pre { 
-   margin-top: 0;
-   max-width: 95%;
-   border: 1px solid #ccc;
-   white-space: pre-wrap;
-}
-
-pre code {
-   display: block; padding: 0.5em;
-}
-
-code.r, code.cpp {
-   background-color: #F8F8F8;
-}
-
-table, td, th {
-  border: none;
-}
-
-blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
-}
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
-}
-
-@media print {
-   * { 
-      background: transparent !important; 
-      color: black !important; 
-      filter:none !important; 
-      -ms-filter: none !important; 
-   }
-
-   body { 
-      font-size:12pt; 
-      max-width:100%; 
-   }
-       
-   a, a:visited { 
-      text-decoration: underline; 
-   }
-
-   hr { 
-      visibility: hidden;
-      page-break-before: always;
-   }
-
-   pre, blockquote { 
-      padding-right: 1em; 
-      page-break-inside: avoid; 
-   }
-
-   tr, img { 
-      page-break-inside: avoid; 
-   }
-
-   img { 
-      max-width: 100% !important; 
-   }
-
-   @page :left { 
-      margin: 15mm 20mm 15mm 10mm; 
-   }
-     
-   @page :right { 
-      margin: 15mm 10mm 15mm 20mm; 
-   }
-
-   p, h2, h3 { 
-      orphans: 3; widows: 3; 
-   }
-
-   h2, h3 { 
-      page-break-after: avoid; 
-   }
-}
-
-</style>
+<link rel="stylesheet" type="text/css" href="blog.css">
 
 <!-- Styles for R syntax highlighter -->
 <style type="text/css">
@@ -238,8 +112,8 @@ head(stats[, 1:3])</code></pre>
 ## 4  Brandon Bass  6  11
 ## 5  Courtney Lee  5   6
 ## 7   Jason Terry  2   7</code></pre>
-</div>
-<div id="implement-the-algorithm" class="section level3">
+
+
 <h3>Implement the Algorithm</h3>
 <p>Now on to the technichal aspects. The heart of CADE relies on two things:</p>
 <ol style="list-style-type: decimal">
@@ -265,8 +139,9 @@ par(mfrow = c(2, 1))
 hist(test)
 hist(uni(test))</code></pre>
 
+<pre class="r"><code>
 <div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-U4RfFKRugHw/U26v6RSDHiI/AAAAAAAAAJM/FuztX2d-9yg/s1600/uni.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/-U4RfFKRugHw/U26v6RSDHiI/AAAAAAAAAJM/FuztX2d-9yg/s320/uni.png" /></a></div>
-
+</code></pre>
 
 <p>Now the rest of CADE is just about creating predictions. The predictions are of cases that are outliers. To do this we make a naive assumption that none of our data is an outlier. Thus we will create a new target varaible y, and give it all values of 0. Then we need to take the fake uniform data that is tructurally the same and give it the same target variable y but only call of the outliers so they get a value of 1. Then we combine these data sets into one and run a machine learning algorithm on them which is able to return a probability instead of a predicted class outcome. Then we use this classifier to evaluate our original data. We call this predicted probability the probability of being an outlier.</p>
 <pre class="r"><code>cade &lt;- function(df, numTree = 500) {
@@ -293,8 +168,8 @@ hist(uni(test))</code></pre>
   
   df
 }</code></pre>
-</div>
-<div id="application" class="section level3">
+
+
 <h3>Application</h3>
 <p>Everything is now in place to try out our experiment. We need to pass the data into the CADE function, only the fields that are needed though. Since the result of the function is a new data frame with a field called prob, we can just take take that field and assign it to the data we pass into the function.</p>
 <pre class="r"><code># Run cade on data, this takes a minute, for analysis only use relevent fields.
@@ -339,7 +214,7 @@ head(rank)</code></pre>
 ## 136   Dwight Howard 4.022    5
 ## 278     Kobe Bryant 3.938    6</code></pre>
 <p>This look great</p>
-</div>
+
 <div id="results" class="section level3">
 <h3>Results</h3>
 <pre class="r"><code># Load all star game data
@@ -389,8 +264,8 @@ al2013</code></pre>
 ## 6          david lee 0.2083   92 0.195745
 ## 13     kevin garnett 0.1961   95 0.202128
 ## 23       tony parker 0.1893   97 0.206383</code></pre>
-</div>
-<div id="conclusion" class="section level3">
+
+
 <h3>Conclusion</h3>
 <p>It seems to work pretty well. There are few ways I think it can be expanded. I only pulled the basic stats but there are is whole plethora of <a href="http://www.basketball-reference.com/playoffs/NBA_2014_ECS.html">advanced</a> stats available from the same source. There is also some newly available <a href="http://stats.nba.com/gameDetail.html?GameID=0041300211&amp;tabView=playertracking">statistics</a> that come from the <a href="http://www.stats.com/sportvu/basketball.asp">SportVU</a> <a href="http://stats.nba.com/playerTracking.html">cameras</a>. These data points may give better lift over some of the more basic stats used here.</p>
 <p>I also wanted to try it compared to a few outer methods to see how well it worked. I started down the path to do a comparison but but hit a roadbloack with the data preprocessing, most other methods depend on lost of up front normalization. One major advantage is that I had to do very little cleaning to get this method to work. Everything else depends on certain normal like distributions, this method is pretty robust leading to quicker results.</p>
