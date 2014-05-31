@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="x-ua-compatible" content="IE=9" >
 
-<title>Networks</title>
+<title>Writer Monads</title>
 
 <link rel="stylesheet" type="text/css" href="../stylesheets/blog.css">
 
@@ -53,15 +53,21 @@
 
 <body>
 
+<div class="container">
+
+
     <header>
       <div class="container">
         <h1>Using Writer Monads in R</h1>
         <h2></h2>
-        <h4 class="author"><em>Kenny Darrell</em></h4>
-        <h4 class="date"><em>May 31, 2014</em></h4>
-        
+
+<h4 class="author"><em>Kenny Darrell</em></h4>
+<h4 class="date"><em>May 31, 2014</em></h4>
+        </section>
       </div>
     </header>
+
+
 
 <p>I was somewhat mystified in finding a solution to the problem posed at the end of a <a href="http://darrkj.github.io/home/blog/I%20Second%20the%20Notion">previous blog</a>. I was trying to find a way to attach meta data to pieces of data as they flowed through various analytic steps, a common task while constructing a dataset. I saw a <a href="https://blog.jcoglan.com/2011/03/05/translation-from-haskell-to-javascript-of-selected-portions-of-the-best-introduction-to-monads-ive-ever-read/">great</a> <a href="https://blog.jcoglan.com/2011/03/06/monad-syntax-for-javascript/">blog</a> that seems to provide the perfect solution. I should have known that the world of functional programming has already solved this problem, only everyone outside of functional programming is probably scared of the answer becuase it contains the <a href="http://en.wikipedia.org/wiki/Monad_(functional_programming)">M</a> word.</p>
 <p>I have recreated that example here to see how easy it is to implement and understand the writer monad concept.</p>
@@ -262,6 +268,9 @@ Lift(Bind(sin)(Unit(3)))</code></pre>
 <pre><code>## [1] &quot;4 &gt;&gt;= round &gt;&gt;= sin &gt;&gt;= tan &gt;&gt;= -0.94438388367123&quot;</code></pre>
 <p>We now see the full pipeline with the result. What you may also notice if you are a <a href="http://blog.sigfpe.com/2006/08/you-could-have-invented-monads-and.html">functional programming connoisseur</a> is that this is basically writing <a href="http://www.haskell.org/haskellwiki/Haskell">Haskell</a> syntax for writer monads. I now think that the solution is the problem is solved but it will take more time to formulate how to implement it correctly.</p>
 
+
+
+</div>
 
 
 </div>
