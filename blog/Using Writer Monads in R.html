@@ -227,7 +227,7 @@ Bind(sin)(2)</code></pre>
 ## 
 ## [[2]]
 ## [1] &quot;NA &gt;&gt;= sin&quot;</code></pre>
-<p>Now the Bind function tells us what it did. If get a piece of data we have the start of an audit trail.</p>
+<p>Now the Bind function tells us what it did. If we get a piece of data we have the start of an audit trail.</p>
 <pre class="r"><code>Unit &lt;- function(x) {
   fcall &lt;- arg(match.call(expand.dots = FALSE)[2])
   list(x, fcall)
@@ -259,7 +259,7 @@ f(Unit(4))</code></pre>
 ## 
 ## [[2]]
 ## [1] &quot;4 &gt;&gt;= round &gt;&gt;= sin &gt;&gt;= tan&quot;</code></pre>
-<p>Now we see the value that was pipe through this analysis.</p>
+<p>Now we see the value that was piped through this analysis.</p>
 <pre class="r"><code>Lift &lt;- function(x) paste(x[[2]], '&gt;&gt;=', x[[1]])
 
 Lift(Bind(sin)(Unit(3)))</code></pre>
