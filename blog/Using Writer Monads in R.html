@@ -266,7 +266,7 @@ Lift(Bind(sin)(Unit(3)))</code></pre>
 <pre><code>## [1] &quot;3 &gt;&gt;= sin &gt;&gt;= 0.141120008059867&quot;</code></pre>
 <pre class="r"><code>Lift(f(Unit(4)))</code></pre>
 <pre><code>## [1] &quot;4 &gt;&gt;= round &gt;&gt;= sin &gt;&gt;= tan &gt;&gt;= -0.94438388367123&quot;</code></pre>
-<p>We now see the full pipeline with the result. What you may also notice if you are a <a href="http://blog.sigfpe.com/2006/08/you-could-have-invented-monads-and.html">functional programming connoisseur</a> is that this is basically writing <a href="http://www.haskell.org/haskellwiki/Haskell">Haskell</a> syntax for writer monads. I now think that the solution is the problem is solved but it will take more time to formulate how to implement it correctly.</p>
+<p>We now see the full pipeline with the result. What you may also notice if you are a <a href="http://blog.sigfpe.com/2006/08/you-could-have-invented-monads-and.html">functional programming connoisseur</a> is that this is basically writing <a href="http://www.haskell.org/haskellwiki/Haskell">Haskell</a> syntax for writer monads. I now think that the problem can be cleanly solved with this solution but it will take more time to formulate how to implement it correctly.</p>
 
 
 
