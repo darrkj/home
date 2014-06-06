@@ -189,7 +189,7 @@ unit(3)</code></pre>
 ## 
 ## [[2]]
 ## [1] &quot; cube was called . sine was called .&quot;</code></pre>
-<p>We have just created to inverse operations, each counters what the other does. Paraphrasing Wikipedia <em>Formally, a monad consists of a type constructor M and two operations, bind and unit. The unit operation takes a value from a plain type and puts it into a monadic container using the constructor, creating a monadic value. The bind operation performs the reverse process, extracting the original value from the container and passing it to the associated next function in the pipeline.</em></p>
+<p>We have just created two inverse operations, each counters what the other does. Paraphrasing Wikipedia <em>Formally, a monad consists of a type constructor M and two operations, bind and unit. The unit operation takes a value from a plain type and puts it into a monadic container using the constructor, creating a monadic value. The bind operation performs the reverse process, extracting the original value from the container and passing it to the associated next function in the pipeline.</em></p>
 <p>Now as we may want to add more functions to our pool we have to add the string construction to each function. We want to lift our functions up to be on par with our monadic container. R makes it very easy to fulfill the needs of lift by being very functional an allowing you to pass functions to functions as arguments and have functions return functions.</p>
 <pre class="r"><code>lift &lt;- function(f) compose(unit, f)
 
