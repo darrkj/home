@@ -69,10 +69,10 @@
 
 <div id="introduction" class="section level3">
 <h3>Introduction</h3>
-<p>Many of my past blog post have been dependent on data that I have had to scrape from the web. I want to do a few things here. First I want to illustrate how easy this is to do if you find some data that you are interested in, I can now do this type of thing in about an hour. I also want to prep some data for another effort so this will be a good multi purpose demonstration. After my last blog about monads I want to rethink the procedure for how I build web crawler and scrapers. After looking back on a few different efforts of this same type I can see the same overall design so I want to see if I can refactor some patterns out of it, so I structured it a little differently that previous efforts.</p>
-<p>First and foremost I want to emphasize that before starting down this path to examine the source to see if they have an easier way to provide the data, either an API or a direct download. Second make sure that they are okay ith you scaraping the data. If they allow you to scrape are there any constraints or permissions of use.</p>
+<p>I am interested in exploring some features of a social network, mainly that of social balance. Many of my past blog post have been dependent on data that I have had to scrape from the web, this one is no different. I want to do a few things here. First I want to illustrate how easy this is to do if you find some data that you are interested in, I can now do this type of thing in about an hour, so I have actaully included the code for this instead of starting at the data.</p>
+<p>First and foremost I want to emphasize that before starting down this path, examine the source to see if they have an easier way to provide the data, either an API or a direct download. Second make sure that they are okay with you scaraping the data. If they allow you to do this are there any constraints or permissions of use.</p>
 <p>The source of interest is the <a href="http://www.start.umd.edu/tops/">data</a>.</p>
-<p>Always turn stringsAsFactors to FALSE when doing this type of work or you will hit many walls where things appear to be easy but do not work. There are two main packages I use for thsi purpose, <a href="http://cran.fhcrc.org/web/packages/httr/index.html">httr</a> and <a href="http://cran.fhcrc.org/web/packages/XML/index.html">XML</a>. It depends on how the data is structured as to which one is better to use. Here we will be using the httr package. We should alos load a few other packages as well as some utility code for the rest of this effort. Some of these functions in this gist are part of my refactoring attempts, can I get to some basic pattern for crawling and supply source specific functions for detail level.</p>
+<p>To get started always turn stringsAsFactors to FALSE when doing this type of work or you will hit many walls where things appear to be easy but do not work. There are two main packages I use for this purpose, <a href="http://cran.fhcrc.org/web/packages/httr/index.html">httr</a> and <a href="http://cran.fhcrc.org/web/packages/XML/index.html">XML</a>. It depends on how the data is structured as to which one is better suited. Here we will be using the httr package. We should also load a few other packages as well as some utility code for the rest of this effort. Some of these functions in this gist are part of my refactoring attempts, can I get to some basic pattern for crawling and supply source specific functions for detail level. This is a more long term effort though as there is so much variety in webpages.</p>
 <pre class="r"><code>library(httr)
 library(igraph)
 library(d3Network)
@@ -125,13 +125,15 @@ for (i in 1:nrow(group)) {
 
 # clean up
 rm(group, base, url, i, x, cleanDet, cleanOrg, net)</code></pre>
-<p>Now we have all of the information each terrorist oraginzation. We need to do some cleanup and create a network structure in the process.</p>
+<p>Now we have all of the information on each terrorist oraginzation. We need to do some cleanup and create a network structure in the process.</p>
 
-You can download the data up to this point by clicking below.
+You can download the data up to this point below.
 <p><a href="terror.RData">Terrorism Data</a></p>
 </div>
 <div id="cleaning-the-data" class="section level3">
 <h3>Cleaning The Data</h3>
+
+<p>I pulled a lot of extra stuff here for things that may or may not be interesting later. We need to clean some of this out and pull what is needed into an edge list. Here each of the organizations may turn into many edges as each has a list of other organzations and there type of realtionship attached.</p>
 <pre class="r"><code># Initialze the network edge list
 net &lt;- data.frame(from = NA, fromn = NA, to = NA, ton = NA, type = NA)
 
@@ -160,7 +162,9 @@ net &lt;- net[-1, ]
 rm(cur, i, tmp, ID, clean)
 </code></pre>
 
-<p>Here is what are out network looks like.</p>
+<p>This is more or less the end of the web crawling and cleaning of the data. The portion I was really interested in comes next. Determining whether terrorist organisations follow the rules from social network analysis pertaining to social balance.</p>
+
+<p>Here is what are our current network looks like. This looks very different than most social networks. It will be interesting to see of the rules that apply as far as social balance are concerned still hold.</p>
 
 <pre class="r"><code>x &lt;- graph.data.frame(net[, c(2, 4)])
 d3plot(x, 700, 1300)</code></pre>
@@ -171,14 +175,17 @@ d3plot(x, 700, 1300)</code></pre>
 
 <div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/terrorGraph" width="730" height="450"></iframe></div>
 
-<p>This is more or less the end of the web crawling and cleaning of the data. The portion I was really interested in comes next. Determining whether terrorist organisations follow the rules from social network analysis pertaining to social balance.</p>
+
 
 <div id="social-balance-analysis" class="section level3">
 <h3>Social Balance Analysis</h3>
 
 
 
-<p>The <a href="http://www.start.umd.edu/tops/">Social Balance Theory</a> lays out some rules for social network relationships. These resolve to; if A like B and B likes C then A will like C. All permutations of like and dislike can be boiled down to two rules. In any triadic relationship either all three like each other or two dislikes and one like. This <a href="http://cs.stanford.edu/people/jure/pubs/triads-chi10.pdf">paper</a> does a much better job of going into all of the specifics. As a common rule if we thing about it as a signed network, any triadic relationship's edges must have a postive product.</p>
+<p>The <a href="http://www.start.umd.edu/tops/">Social Balance Theory</a> lays out some rules for social network relationships. These pertain to rules similar to if A like B and B likes C then A will like C. All permutations of like and dislike can be boiled down to two rules. In any triadic relationship either all three like each other or two dislike edges and one like. This <a href="http://cs.stanford.edu/people/jure/pubs/triads-chi10.pdf">paper</a> does a much better job of going into all of the specifics. As a common rule if we think about it as a signed network, any triadic relationship's edges must have a postive product. 
+</p>
+
+<p>The first thing we must do is devise a way to find all triangles in the network. This turns into a search for each pair of adjacent vertices that share a similar adjacent vertex. We result in list where each items is a set of three vertices, which form a triangle or 3-clique. We also have to do some interpretation of what each edge type is. This boils down to who likes who and who dislikes who. We can then use these to turn the the network into a signed network where positive means like and negative means dislike.</p>
 <pre class="r"><code>
 
 # Turn suspected allys into allies
@@ -214,9 +221,12 @@ for (i in nodes) {
   }
 }
 tri &lt;- tri[-1, ]
+</code></pre>
 
+Now with the search out of the way we just need to determine which triangles do not follow the social balance rules. Since the product of all of the edges must be positive we have only a few options.
+The cases with (1, 1, 1) and (1, -1, -1) agree with the rule disregarding order. The cases with (-1, -1, -1) and (1, 1, -1) do not agree.
 
-
+<pre class="r"><code>
 SocImbal &lt;- data.frame(tri = NA, fromn = NA, ton = NA, type = NA, conn = NA, prod = NA)
 
 for(i in 1:nrow(tri)) {
@@ -246,10 +256,14 @@ length(Imbal)</code></pre>
   plot(y, edge.color = x$color)
 }</code></pre>
 
+<p>We have a quite a few cases which do not follow the rules. I need to do some further checks still to make sure that I have eliminated each graph automorphism, so it could actaully be half of this number.</p>
+
 <img src="../images/ib1.png" height="200" width="350" align="middle">
 <img src="../images/ib2.png" height="200" width="350" align="middle">
 <img src="../images/ib3.png" height="200" width="350" align="middle">
 <img src="../images/ib4.png" height="200" width="350" align="middle">
+
+<p>This is very interesting as it means that so terrorist groups are at odds with groups who there allies are allies with. I guess that there is also a lot more that could be happening here a well since some realtionships could have changed over time and this data goes back to the 1960's. It could be that the current snapshot is inaccurate as some organizations no longer exist, but we have there last known feelings towards others. As times change they thier allies could start to be enimies. There is also the possibility that they have no reason to follow this sort of logic, or any logic at all. I would be much more interested in the temporal case, especially seeing how and when they turned on each other and how that propagates through the rest of the network.</p>
 
 
 </div>
