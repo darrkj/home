@@ -250,8 +250,8 @@ SocImbal$color &lt;- ifelse(SocImbal$conn == 1, 'blue', 'red')</code></pre>
 length(Imbal)</code></pre>
 <pre><code>## [1] 339</code></pre>
 <pre class="r"><code>for (i in Imbal[1:4]) {
-  x &lt;- SocImbal[SocImbal$tri == 1, c(2, 3, 4, 7)]
-  y &lt;- graph.data.frame(SocImbal[1:3, c(2, 3)])
+  x &lt;- SocImbal[SocImbal$tri == i, c(2, 3, 4, 7)]
+  y &lt;- graph.data.frame(x[, 1:2])
   E(y)$label &lt;- x$type
   plot(y, edge.color = x$color)
 }</code></pre>
