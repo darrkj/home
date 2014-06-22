@@ -139,8 +139,11 @@ hist(test)
 hist(uni(test))</code></pre>
 
 <pre class="r"><code>
-<div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-U4RfFKRugHw/U26v6RSDHiI/AAAAAAAAAJM/FuztX2d-9yg/s1600/uni.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/-U4RfFKRugHw/U26v6RSDHiI/AAAAAAAAAJM/FuztX2d-9yg/s320/uni.png" /></a></div>
-</code></pre>
+
+
+<div class="separator" style="clear: both; text-align: center;"><img src="../images/uni.png" height="200" width="350"></a></div>
+
+
 
 <p>Now the rest of CADE is just about creating predictions. The predictions are of cases that are outliers. To do this we make a naive assumption that none of our data is an outlier. Thus we will create a new target varaible y, and give it all values of 0. Then we need to take the fake uniform data that is tructurally the same and give it the same target variable y but only call of the outliers so they get a value of 1. Then we combine these data sets into one and run a machine learning algorithm on them which is able to return a probability instead of a predicted class outcome. Then we use this classifier to evaluate our original data. We call this predicted probability the probability of being an outlier.</p>
 <pre class="r"><code>cade &lt;- function(df, numTree = 500) {
