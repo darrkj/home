@@ -67,7 +67,172 @@
       </div>
     </header>
 
+<div id="introduction" class="section level3">
+<h3>Introduction</h3>
+<p>Many of my past blog post have been dependent on data that I have had to scrape from the web. I want to do a few things here. First I want to illustrate how easy this is to do if you find some data that you are interested in, I can now do this type of thing in about an hour. I also want to prep some data for another effort so this will be a good multi purpose demonstration. After my last blog about monads I want to rethink the procedure for how I build web crawler and scrapers. After looking back on a few different efforts of this same type I can see the same overall design so I want to see if I can refactor some patterns out of it, so I structured it a little differently that previous efforts.</p>
+<p>First and foremost I want to emphasize that before starting down this path to examine the source to see if they have an easier way to provide the data, either an API or a direct download. Second make sure that they are okay ith you scaraping the data. If they allow you to scrape are there any constraints or permissions of use.</p>
+<p>The source of interest is the <a href="http://www.start.umd.edu/tops/">data</a>.</p>
+<p>Always turn stringsAsFactors to FALSE when doing this type of work or you will hit many walls where things appear to be easy but do not work. There are two main packages I use for thsi purpose, <a href="http://cran.fhcrc.org/web/packages/httr/index.html">httr</a> and <a href="http://cran.fhcrc.org/web/packages/XML/index.html">XML</a>. It depends on how the data is structured as to which one is better to use. Here we will be using the httr package. We should alos load a few other packages as well as some utility code for the rest of this effort. Some of these functions in this gist are part of my refactoring attempts, can I get to some basic pattern for crawling and supply source specific functions for detail level.</p>
+<pre class="r"><code>library(httr)
+library(igraph)
+library(d3Network)
+library(devtools, warn.conflicts = F)
+options(stringsAsFactors = FALSE)
+source_gist('415e3308544ff2d77d4e')</code></pre>
+<pre><code>## Sourcing https://gist.githubusercontent.com/darrkj/415e3308544ff2d77d4e/raw/2d647b072a8e86a62676e87c60b9c4a08d8a25c6/terrorNet.R
+## SHA-1 hash of file is dc4ae617a2a34393e1831911702359d7d3184766</code></pre>
+</div>
+<div id="getting-the-data" class="section level3">
+<h3>Getting the Data</h3>
+<p>Now we need to define our site of interest and actually crawl all of the links and scrape the data of interest. This basically results in one loop for each case, the first will gather all of the URLs we are interested in, while the second will pull data from each of these pages.</p>
+<pre class="r"><code># Base website
+base &lt;- 'http://www.start.umd.edu/tops/'
+# Query string for alphabetical search
+site &lt;- 'terrorist_organizations_by_alpha.asp?q='
 
+# These are the sites to search
+site &lt;- paste(base, site, LETTERS, sep = '')
+
+# Initialze data frame.
+group &lt;- data.frame(ID = NA, name = NA)
+
+for (i in site) {
+  # Pull data for each letter.
+  page &lt;- cleanOrg(strsplit(as.character(GET(i)), '\n')[[1]])
+  group &lt;- rbind(group, page)
+}
+# Remove first inited row
+group &lt;- group[-1, ]
+
+# Clean up workspace
+rm(i, site, page)
+
+
+# The scraping loop
+details &lt;- list()
+
+for (i in 1:nrow(group)) {
+  # Create url
+  url &lt;- paste(base, group[i, 1], sep = '')[1]
+
+  x &lt;- cleanDet(url)
+  net &lt;- x[[1]]
+  x &lt;- x[[2]]
+
+  details[[group[i, 2]]] &lt;- 
+    list(name = group[i, 2], ID = group[i, 1], net = net, alias = x[2], 
+         BaseOfOp = x[3], DateFormed = x[4], Strength = x[5], Class = x[6],
+         Finance = x[7], Phil = x[8], Goals = x[9])
+}
+
+# clean up
+rm(group, base, url, i, x, cleanDet, cleanOrg, net)</code></pre>
+<p>Now we have all of the information each terrorist oraginzation. We need to do some cleanup and create a network structure in the process.</p>
+</div>
+<div id="cleaning-the-data" class="section level3">
+<h3>Cleaning The Data</h3>
+<pre class="r"><code># Initialze the network edge list
+net &lt;- data.frame(from = NA, fromn = NA, to = NA, ton = NA, type = NA)
+
+# Loop through all o fhte detail info and pull out individual edges
+for (i in seq(details)) {
+  cur &lt;- details[[i]]
+  # Get the ID (4324) for the current org
+  cur$ID &lt;- ID(cur$ID)
+
+  # Add the ID to the edge list
+  if (!is.null(cur$net$ID)) {
+    cur$net$from &lt;- cur$ID 
+    cur$net$fromn &lt;- cur$name
+    cur$net$to &lt;- ID(cur$net$ID)
+  
+    # Clean up the edge list, add name connection type
+    tmp &lt;- strsplit(cur$net$name, ' -- ')
+    cur$net$ton &lt;- unlist(lapply(tmp, `[`, 1))
+    cur$net$type &lt;- unlist(lapply(tmp, `[`, 2))
+    # remove original fields
+    cur$net &lt;- cur$net[, 3:7]
+    net &lt;- rbind(net, cur$net)
+  } 
+}
+net &lt;- net[-1, ]
+#</code></pre>
+<pre class="r"><code>rm(cur, i, tmp, ID, clean)
+
+# Turn suspected allys into allies
+ally &lt;- c(&quot;Ally&quot;, 'Ally (Suspected)', 'Armed Wing', 'Founding Group', 
+          'Founding Group (Suspected)', 'Founding Group and Faction', 
+          'General Command (PFLP-GC)', &quot;Political Wing&quot;, 'Successor', 
+          'Suspected Alias/Ally', &quot;Shared Members&quot;, 'Other Affiliation', 
+          'Supported Cause', 'Umbrella Organization',
+          &quot;Umbrella Organization (Suspected)&quot;, &quot;Other Affiliation&quot;)
+
+
+enemy &lt;- c(&quot;Competing Faction&quot;, &quot;Enemy&quot;, &quot;Faction&quot;, &quot;Rival&quot;, 
+           &quot;Rival and Ally&quot;, &quot;Splinter Group&quot;,
+           &quot;Splinter Group (Suspected)&quot;) 
+
+net$conn &lt;- ifelse(net$type %in% ally, 1, -1)</code></pre>
+<p>Here is what are out network looks like.</p>
+
+
+<pre class="r"><code>x &lt;- graph.data.frame(net[, c(2, 4)])
+d3plot(x, 700, 1300)</code></pre>
+</div>
+
+
+<p><span>June 22, 2014</span><a href="terror.RData">Terrorism Data</a></p>
+
+<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/terrorGraph" width="550" height="450"></iframe></div>
+
+
+
+<div id="social-balance-analysis" class="section level3">
+<h3>Social Balance Analysis</h3>
+<pre class="r"><code># For social balance each edge in a triangle must add to an even number.
+nodes &lt;- unique(net$from)
+
+tri &lt;- data.frame(n1 = NA, n2 = NA, n3 = NA)
+
+for (i in nodes) {
+  n2 &lt;- net[net$from == i, ]$to
+  if ( length(n2) &gt; 1) {
+    for (j in n2) {
+      n3 &lt;- net[net$from == j, ]$to
+      n &lt;- intersect(n2, n3)
+      if ( length(n) &gt; 0 ) {
+        tri &lt;- rbind(tri, data.frame(n1 = i, n2 = j, n3 = n))
+      }
+    }
+  }
+}
+tri &lt;- tri[-1, ]
+
+
+
+SocImbal &lt;- data.frame(tri = NA, fromn = NA, ton = NA, type = NA, conn = NA, prod = NA)
+
+for(i in 1:nrow(tri)) {
+  a &lt;- net[net$from == tri[i, 1] &amp; net$to == tri[i, 2, ], c(2, 4:6)]
+  b &lt;- net[net$from == tri[i, 1] &amp; net$to == tri[i, 3, ], c(2, 4:6)]
+  c &lt;- net[net$from == tri[i, 2] &amp; net$to == tri[i, 3, ], c(2, 4:6)]
+  
+  prod &lt;- a$conn * b$conn * c$conn
+  if (prod &lt; 0) {
+    SocImbal &lt;- rbind(SocImbal, 
+                      data.frame(tri = i, a, prod),
+                      data.frame(tri = i, b, prod),
+                      data.frame(tri = i, c, prod))
+  }
+}
+
+SocImbal &lt;- SocImbal[-1, ]
+
+SocImbal$color &lt;- ifelse(SocImbal$conn == 1, 'blue', 'red')</code></pre>
+<pre class="r"><code>x &lt;- SocImbal[SocImbal$tri == 1, c(2, 3, 4, 7)]
+y &lt;- graph.data.frame(SocImbal[1:3, c(2, 3)])
+E(y)$label &lt;- x$type
+plot(y, edge.color = x$color)</code></pre>
 
 
 
