@@ -209,13 +209,17 @@ movie &lt;- mov[mov$name == title, ]
 qplot(Day, daily, data = movie, main = title)
 </code></pre>
 
-<div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-3ofPI0iGC4g/U0Fogab-0GI/AAAAAAAAAHg/-3nmDvMf-dY/s3200/unnamed-chunk-41.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/-3ofPI0iGC4g/U0Fogab-0GI/AAAAAAAAAHg/-3nmDvMf-dY/s1600/unnamed-chunk-41.png" /></a></div>
+<div class="separator" style="clear: both; text-align: center;"><img src="../images/repro1.png" height="400" width="550"></a></div>
+
+
 
 <pre><code class="r"># Zoom in on area of interest.
 qplot(Day, daily, data = movie[1:40, ], main = title)
 </code></pre>
 
-<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-LFRZHCPDzkU/U0FogXHa2WI/AAAAAAAAAHY/oRhwsroD-3I/s3200/unnamed-chunk-42.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/-LFRZHCPDzkU/U0FogXHa2WI/AAAAAAAAAHY/oRhwsroD-3I/s1600/unnamed-chunk-42.png" /></a></div>
+<div class="separator" style="clear: both; text-align: center;"><img src="../images/repro2.png" height="400" width="550"></a></div>
+
+
 
 <pre><code class="r">
 # The day of the week seems to have a big impact on sales.  Lets break it
@@ -223,7 +227,9 @@ qplot(Day, daily, data = movie[1:40, ], main = title)
 ggplot(movie, aes(Day, daily)) + geom_point() + facet_grid(. ~ weekday)
 </code></pre>
 
-<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-2lynhF2kXUw/U0FogqLHkjI/AAAAAAAAAHc/cTLGB_RgX74/s3200/unnamed-chunk-43.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/-2lynhF2kXUw/U0FogqLHkjI/AAAAAAAAAHc/cTLGB_RgX74/s1600/unnamed-chunk-43.png" /></a></div>
+<div class="separator" style="clear: both; text-align: center;"><img src="../images/repro3.png" height="400" width="550"></a></div>
+
+
 
 </body>
 
