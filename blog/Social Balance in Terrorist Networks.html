@@ -162,7 +162,7 @@ net &lt;- net[-1, ]
 rm(cur, i, tmp, ID, clean)
 </code></pre>
 <pre class="r"><code>
-
+<p>Here is what are out network looks like.</p>
 
 <pre class="r"><code>x &lt;- graph.data.frame(net[, c(2, 4)])
 d3plot(x, 700, 1300)</code></pre>
@@ -178,7 +178,6 @@ d3plot(x, 700, 1300)</code></pre>
 <div id="social-balance-analysis" class="section level3">
 <h3>Social Balance Analysis</h3>
 
-
 # Turn suspected allys into allies
 ally &lt;- c(&quot;Ally&quot;, 'Ally (Suspected)', 'Armed Wing', 'Founding Group', 
           'Founding Group (Suspected)', 'Founding Group and Faction', 
@@ -193,7 +192,7 @@ enemy &lt;- c(&quot;Competing Faction&quot;, &quot;Enemy&quot;, &quot;Faction&qu
            &quot;Splinter Group (Suspected)&quot;) 
 
 net$conn &lt;- ifelse(net$type %in% ally, 1, -1)</code></pre>
-<p>Here is what are out network looks like.</p>
+
 
 
 
