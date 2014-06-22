@@ -119,10 +119,8 @@ for (i in 1:nrow(group)) {
   net &lt;- x[[1]]
   x &lt;- x[[2]]
 
-  details[[group[i, 2]]] &lt;- 
-    list(name = group[i, 2], ID = group[i, 1], net = net, alias = x[2], 
-         BaseOfOp = x[3], DateFormed = x[4], Strength = x[5], Class = x[6],
-         Finance = x[7], Phil = x[8], Goals = x[9])
+  details[[group[i, 2]]] &lt;- list(name = group[i, 2], ID = group[i, 1], 
+                                 net = net
 }
 
 # clean up
@@ -178,6 +176,11 @@ d3plot(x, 700, 1300)</code></pre>
 <div id="social-balance-analysis" class="section level3">
 <h3>Social Balance Analysis</h3>
 
+
+
+<p>The <a href="http://www.start.umd.edu/tops/">Social Balance Theory</a> lays out some rules for social network relationships. These resolve to; if A like B and B likes C then A will like C. All permutations of like and dislike can be boiled down to two rules. In any triadic relationship either all three like each other or two dislikes and one like. This <a href="http://cs.stanford.edu/people/jure/pubs/triads-chi10.pdf">paper</a> does a much better job of going into all of the specifics. As a common rule if we thing about it as a signed network, any triadic relationship's edges must have a postive product.</p>
+<pre class="r"><code>
+
 # Turn suspected allys into allies
 ally &lt;- c(&quot;Ally&quot;, 'Ally (Suspected)', 'Armed Wing', 'Founding Group', 
           'Founding Group (Suspected)', 'Founding Group and Faction', 
@@ -191,14 +194,9 @@ enemy &lt;- c(&quot;Competing Faction&quot;, &quot;Enemy&quot;, &quot;Faction&qu
            &quot;Rival and Ally&quot;, &quot;Splinter Group&quot;,
            &quot;Splinter Group (Suspected)&quot;) 
 
-net$conn &lt;- ifelse(net$type %in% ally, 1, -1)</code></pre>
+net$conn &lt;- ifelse(net$type %in% ally, 1, -1)
 
-
-
-
-
-<p>The <a href="http://www.start.umd.edu/tops/">Social Balance Theory</a> lays out some rules for social network relationships. These resolve to; if A like B and B likes C then A will like C. All permutations of like and dislike can be boiled down to two rules. In any triadic relationship either all three like each other or two dislikes and one like. This <a href="http://cs.stanford.edu/people/jure/pubs/triads-chi10.pdf">paper</a> does a much better job of going into all of the specifics. As a common rule if we thing about it as a signed network, any triadic relationship's edges must have a postive product.</p>
-<pre class="r"><code># For social balance each edge in a triangle must add to an even number.
+# For social balance each edge in a triangle must add to an even number.
 nodes &lt;- unique(net$from)
 
 tri &lt;- data.frame(n1 = NA, n2 = NA, n3 = NA)
@@ -238,13 +236,21 @@ for(i in 1:nrow(tri)) {
 SocImbal &lt;- SocImbal[-1, ]
 
 SocImbal$color &lt;- ifelse(SocImbal$conn == 1, 'blue', 'red')</code></pre>
-<pre class="r"><code>x &lt;- SocImbal[SocImbal$tri == 1, c(2, 3, 4, 7)]
-y &lt;- graph.data.frame(SocImbal[1:3, c(2, 3)])
-E(y)$label &lt;- x$type
-plot(y, edge.color = x$color)</code></pre>
+<pre class="r"><code>Imbal &lt;- unique(SocImbal$tri)
+length(Imbal)</code></pre>
+<pre><code>## [1] 339</code></pre>
+<pre class="r"><code>for (i in Imbal[1:1]) {
+  x &lt;- SocImbal[SocImbal$tri == 1, c(2, 3, 4, 7)]
+  y &lt;- graph.data.frame(SocImbal[1:3, c(2, 3)])
+  E(y)$label &lt;- x$type
+  plot(y, edge.color = x$color)
+}</code></pre>
 
-
-
+<img src="../images/ib1.png" height="200" width="450">
+<img src="../images/ib2.png" height="200" width="450">
+<img src="../images/ib3.png" height="200" width="450">
+<img src="../images/ib4.png" height="200" width="450">
+<img src="../images/ib5.png" height="200" width="450">
 
 </div>
 
