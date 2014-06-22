@@ -71,7 +71,11 @@
 
 <p>A little background before we dive in may be useful if you are not familiar with this concept.  The premise is that we have a two dimensional grid, each cell can be in one of two states, on or off.  The top row is initialized with the center cell being on and all other cells being off.  The state of each cell in a row is determined by the state of the cells in the row directly above that row. A given cell determines its state by looking at the cell directly above it and the diagonals. Thus it is dependent on three cells. Since each of these three cells can be in one of two states, we have 2 to the third power of permutations or eight ways the child can determine its state based on its three parents. If we take each of these eight permutations as being able to define the alive or dead state of the child we end up with 2 to the eighth power of permutations or 256 different rules we can follow. Each of these rules leads to very different outcomes. Below you can see one of these 256 sets of rules.</p>
 
-<div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-0J8bnZ2o1eA/U0Frc-esi_I/AAAAAAAAAII/9ppq2LzBxhU/s3200/cell.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/-0J8bnZ2o1eA/U0Frc-esi_I/AAAAAAAAAII/9ppq2LzBxhU/s1600/cell.png" /></a></div>
+
+<div class="separator" style="clear: both; text-align: center;"><img src="../images/cell.png" height="400" width="550"></a></div>
+
+
+
 
 <p>For every child here we could have alive or dead for each of the eight combinations of parents. Now we shall proceed to construct an image for this model. To do this we need to create a few functions that will handle the computations required. First we create function that will capture the state of a child&#39;s parents and return a value to indicate the specific sequence. We denote this sequence of the parent cells by return a value of one to eight. We then compile this function to make it faster, about 3x to 5x faster.</p>
 
@@ -139,12 +143,16 @@ cAut &lt;- cmpfun(cellAut)
 <pre><code class="r">cAut(30, 101)
 </code></pre>
 
-<div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-c2e6tfSSnmI/U0Frc9yp6MI/AAAAAAAAAIM/nXleNqBTtVE/s3200/unnamed-chunk-3.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://4.bp.blogspot.com/-c2e6tfSSnmI/U0Frc9yp6MI/AAAAAAAAAIM/nXleNqBTtVE/s1600/unnamed-chunk-3.png" /></a></div>
+
+<div class="separator" style="clear: both; text-align: center;"><img src="../images/cell1.png" height="400" width="550"></a></div>
+
 
 <pre><code class="r">cAut(100, 101)
 </code></pre>
 
-<div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-qsIFM6euVaA/U0FrdBzQcVI/AAAAAAAAAIg/5Vby142SIf8/s3200/unnamed-chunk-4.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/-qsIFM6euVaA/U0FrdBzQcVI/AAAAAAAAAIg/5Vby142SIf8/s1600/unnamed-chunk-4.png" /></a></div>
+
+<div class="separator" style="clear: both; text-align: center;"><img src="../images/cell2.png" height="400" width="550"></a></div>
+
 
 <p>If you load the manipulate package you can explore these rules interactively by running the following code.</p>
 
@@ -203,7 +211,8 @@ runApp(&quot;test&quot;)
 
 <p>You can see a screenshot of the result below. I wish I was able to include the result here but my I am yet unsure how to do this. I hope to try some other features out in this package in the future. I hope this presents how simple it is to make something with Shiny.</p>
 
-<div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-H84eoTFYKmg/U0Fs_IZHPZI/AAAAAAAAAIs/TNSq1SFNgu0/s3200/ui.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/-H84eoTFYKmg/U0Fs_IZHPZI/AAAAAAAAAIs/TNSq1SFNgu0/s1600/ui.png" /></a></div>
-</body>
+
+<div class="separator" style="clear: both; text-align: center;"><img src="../images/ui.png" height="400" width="550"></a></div>
+
 
 </html>
