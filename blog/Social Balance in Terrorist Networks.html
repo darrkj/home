@@ -128,6 +128,9 @@ for (i in 1:nrow(group)) {
 # clean up
 rm(group, base, url, i, x, cleanDet, cleanOrg, net)</code></pre>
 <p>Now we have all of the information each terrorist oraginzation. We need to do some cleanup and create a network structure in the process.</p>
+
+You can download the data up to this point by clicking below.
+<p><a href="terror.RData">Terrorism Data</a></p>
 </div>
 <div id="cleaning-the-data" class="section level3">
 <h3>Cleaning The Data</h3>
@@ -156,8 +159,25 @@ for (i in seq(details)) {
   } 
 }
 net &lt;- net[-1, ]
-#</code></pre>
-<pre class="r"><code>rm(cur, i, tmp, ID, clean)
+rm(cur, i, tmp, ID, clean)
+</code></pre>
+<pre class="r"><code>
+
+
+<pre class="r"><code>x &lt;- graph.data.frame(net[, c(2, 4)])
+d3plot(x, 700, 1300)</code></pre>
+</div>
+
+
+
+
+<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/terrorGraph" width="730" height="450"></iframe></div>
+
+<p>This is more or less the end of the web crawling and cleaning of the data. The portion I was really interested in comes next. Determining whether terrorist organisations follow the rules from social network analysis pertaining to social balance.</p>
+
+<div id="social-balance-analysis" class="section level3">
+<h3>Social Balance Analysis</h3>
+
 
 # Turn suspected allys into allies
 ally &lt;- c(&quot;Ally&quot;, 'Ally (Suspected)', 'Armed Wing', 'Founding Group', 
@@ -176,19 +196,9 @@ net$conn &lt;- ifelse(net$type %in% ally, 1, -1)</code></pre>
 <p>Here is what are out network looks like.</p>
 
 
-<pre class="r"><code>x &lt;- graph.data.frame(net[, c(2, 4)])
-d3plot(x, 700, 1300)</code></pre>
-</div>
 
 
-<p><a href="terror.RData">Terrorism Data</a></p>
-
-<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/terrorGraph" width="730" height="450"></iframe></div>
-
-
-
-<div id="social-balance-analysis" class="section level3">
-<h3>Social Balance Analysis</h3>
+<p>The <a href="http://www.start.umd.edu/tops/">Social Balance Theory</a> lays out some rules for social network relationships. These resolve to; if A like B and B likes C then A will like C. All permutations of like and dislike can be boiled down to two rules. In any triadic relationship either all three like each other or two dislikes and one like. This <a href="http://cs.stanford.edu/people/jure/pubs/triads-chi10.pdf">paper</a> does a much better job of going into all of the specifics. As a common rule if we thing about it as a signed network, any triadic relationship's edges must have a postive product.</p>
 <pre class="r"><code># For social balance each edge in a triangle must add to an even number.
 nodes &lt;- unique(net$from)
 
