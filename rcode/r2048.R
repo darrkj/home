@@ -1,4 +1,4 @@
-r2048 <- function() {
+r2048 <- function(a = F) {
   
   # Generate an initial game board
   gen_board <- function() {
@@ -144,6 +144,6 @@ r2048 <- function() {
   }
   
   
-  auto_play2(gen_board())
+  if(a = T) auto_play2(gen_board()) else auto_play(gen_board())
   
 }
