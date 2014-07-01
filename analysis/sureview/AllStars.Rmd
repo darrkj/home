@@ -1,0 +1,38 @@
+---
+title: "Detecting All Stars Using CADE"
+author: "Kenny Darrell"
+date: "May 10, 2014"
+output: html_document
+---
+
+
+
+I recentely listend to [David Jensen](https://www.cs.umass.edu/faculty/directory/jensen_david) give a brief overview of an anomaly detection method called [CADE](http://people.cs.umass.edu/~lfriedl/pubs/SDM2014-paper.pdf) or [Classifier Adjusted Density Estimation](http://people.cs.umass.edu/~lfriedl/pubs/SDM2014-supp.pdf). The method seemed very easy to grasp at first which is not usualy the case for some recently published machine learning work. I can never reset to try to implement these things myself on a toy example to learn what makes them tick and if they really deliver on what they promise.
+
+I wasn to try to create an example that will find anomolous players in the NBA. I think in order to do this I may have to modify some of the later steps of this methodolgy. But first we need some data. Lets walk through the steps I am using to get this data.
+
+I have some code in a Github [gist](https://gist.github.com/darrkj/18d3587617aad8aaf4dd) that we will utilize so first lets get that functionality into the workspace. This code is actaully very similar to some code I have used in previous posts except I realized some fo the sites have changed and we only need a subset of that functionality.
+
+```{r gistImport}
+require(devtools)
+
+source_gist('18d3587617aad8aaf4dd')
+```
+
+Before we proceed I should explain a bit more about waht I am attempting to do here. I am hoping to find players which are all stars, in order to do that I am going to try to find outliers. In doing this I may find some players that are not all stars but different for some other reason which will alos be interesting. THe methodology being used looks at players-days, so statistics from a single game. It then finds the player-games that are anomolous. I have an instinct that I can aggregate these games up to the player level and have and ordering of players and those that are the furthest out will be all stars possible including other groups of players as well. I will attempt to explain the details of the actual outlier detection method as it is needed.  
+
+First though we need to get the data needed for our analysis. This part will take a bit of time. 
+
+```{r}
+# Get all data for 2013
+# season <- seasonify(2013)
+load("~/Desktop/r/sureview/season.RData")
+```
+
+Now we have an entire season of NBA games.
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
