@@ -1,4 +1,4 @@
-r2048 <- function(a = F) {
+r2048 <- function(a = F, p = c(.4, .05, .15, .4)) {
   
   # Generate an initial game board
   gen_board <- function() {
@@ -137,7 +137,7 @@ r2048 <- function(a = F) {
    
   auto_play2 <- function(b) {
     while(not_game_over(b)) {
-      n <- sample(c('l', 'r', 'u', 'd'), 1, prob = c(.4, .1, .1, .4))
+      n <- sample(c('l', 'r', 'u', 'd'), 1, prob = p)
       b <- agg(b, n)
     }
     max(b)
