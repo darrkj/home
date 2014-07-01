@@ -1,0 +1,68 @@
+<canvas id="myCanvas" width="200" height="200"></canvas>
+
+<div onclick="clickHandler();">Clicks Here</div>
+
+
+
+<script>
+var mode = 1;
+var destA = 7;
+var destB = 6;
+var SIZE = 20;
+var X = 10;
+var Y = 8;
+var CELLS = X * Y;
+
+function makeGrid(x, y) {
+  var grid = [];
+  for(var i = 0; i < x; i++) {
+    grid[i] = [];
+    for(var j = 0; j < y; j++) {
+      grid[i][j] = 0;
+    }
+  }
+  return t;
+}
+  
+var matrix = [];
+for(var i = 0; i < X; i++) {
+    matrix[i] = [];
+    for(var j = 0; j < 8; j++) {
+      if ((j + i) % 2 == 0) {
+        matrix[i][j] = 1;
+      }
+      else {
+        matrix[i][j] = 0;
+      }
+    }
+}
+
+function clickHandler() {
+  var canvas=document.getElementById('myCanvas');
+  var ctx=canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (mode == 1) {
+    var colA = '#FF0000';
+    var colB = '#0000FF';
+    mode = 0;
+  }
+  else {
+    var colA = '#0000FF';
+    var colB = '#FF0000';
+    mode = 1;
+  }
+ 
+  for(var i = 0; i < X; i++) {
+    for(var j = 0; j < Y; j++) {
+      if (matrix[i][j] == 1) {
+        ctx.fillStyle = colA;
+      }
+      else {
+        ctx.fillStyle = colB;
+      }
+      ctx.fillRect(i*SIZE, j*SIZE, SIZE, SIZE);
+    }
+  } 
+    
+}
+</script> 
