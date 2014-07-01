@@ -1,0 +1,28 @@
+This project will incorperate a lot of ideas
+I have latley.
+
+Use R to scrape data, mainley from CRAN to get dependencies 
+of packages.  This would be used to create a network of what
+is dependent on what.  Maybe other things could come fro mit as well
+like showing which packages are teh least stable, which ones are
+hubs, etc.  Maybe for some of this a network over time would be 
+needed.
+
+Create networks and network visualizations.
+
+Really ise R for a project, use version control over.
+
+Make a interesting interface which can show visualizations and 
+take some form of user input.
+
+Would alos be very cool to do most of this interface in shiny.
+
+Could I store this graph in Titan or Neo4j, have a connection
+and a method to pull data from this database.  Then make plots in 
+both igraph and even a hoo to Gephi.  This would allow me to use 
+RServe more.
+
+Make things in an interfacable manner so that any peice can be worked 
+on at any time, not having to start with getting data.
+
+data can come from cran and inside-r
