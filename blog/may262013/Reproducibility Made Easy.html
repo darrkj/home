@@ -7,8 +7,7 @@
 
 <title>Reproducibility</title>
 
-<link rel="stylesheet" type="text/css" href="blog.css">
-<link rel="stylesheet" type="text/css" href="../stylesheets/blog.css">
+<link rel="stylesheet" type="text/css" href="../../stylesheets/blog.css">
 
 <!-- Styles for R syntax highlighter -->
 <style type="text/css">
@@ -42,12 +41,12 @@
    }
 </style>
 
-    <link rel="stylesheet" type="text/css" href="../stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="../stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="../stylesheets/print.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/print.css" media="print" />
 
 <!-- R syntax highlighter -->
-<script src="../javascripts/r.js"></script>
+<script src="../../javascripts/r.js"></script>
 
 
 </head>
@@ -209,7 +208,7 @@ movie &lt;- mov[mov$name == title, ]
 qplot(Day, daily, data = movie, main = title)
 </code></pre>
 
-<div class="separator" style="clear: both; text-align: center;"><img src="../images/repro1.png" height="400" width="550"></a></div>
+<div class="separator" style="clear: both; text-align: center;"><img src="repro1.png" height="400" width="550"></a></div>
 
 
 
@@ -217,7 +216,7 @@ qplot(Day, daily, data = movie, main = title)
 qplot(Day, daily, data = movie[1:40, ], main = title)
 </code></pre>
 
-<div class="separator" style="clear: both; text-align: center;"><img src="../images/repro2.png" height="400" width="550"></a></div>
+<div class="separator" style="clear: both; text-align: center;"><img src="repro2.png" height="400" width="550"></a></div>
 
 
 
@@ -227,7 +226,7 @@ qplot(Day, daily, data = movie[1:40, ], main = title)
 ggplot(movie, aes(Day, daily)) + geom_point() + facet_grid(. ~ weekday)
 </code></pre>
 
-<div class="separator" style="clear: both; text-align: center;"><img src="../images/repro3.png" height="400" width="550"></a></div>
+<div class="separator" style="clear: both; text-align: center;"><img src="repro3.png" height="400" width="550"></a></div>
 
 
 
