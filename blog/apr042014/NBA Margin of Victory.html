@@ -122,7 +122,7 @@ names(final) &lt;- team
 <pre><code class="r">cal.heatMap(final[[&quot;Chicago Bulls&quot;]], &quot;margin&quot;)
 </code></pre>
 
-<div class="separator" style="clear: both; text-align: center;"><img src="heat1.png" height="200" width="350"></a></div>
+<div class="separator" style="clear: both; text-align: center;"><img src="heat1.png" height="300" width="550"></a></div>
 
 
 <p>One interesting note here, the Bulls seem to have a lop sided margin they win by more that they lose. This would seem to indicate that they were a good team that year. The other thing to note is that there is a lot of orange meaning it&#39;s hard to tell whether they won or lost in all but the most extreme cases, like winning by 40. Thus it is hard to determine whether they are actually good team as far as wins and losses are concerned.</p>
@@ -138,7 +138,7 @@ final2 &lt;- lapply(final, function(x) data.frame(date = x$date, win = ifelse(x$
 <pre><code class="r">cal.heatMap(final2[[&quot;Chicago Bulls&quot;]], &quot;win&quot;)
 </code></pre>
 
-<div class="separator" style="clear: both; text-align: center;"><img src="heat2.png" height="200" width="350"></a></div>
+<div class="separator" style="clear: both; text-align: center;"><img src="heat2.png" height="300" width="550"></a></div>
 
 <p>This tells a lot more of the story, in the case of the 2011-2012 Chicago Bulls, they were always on top. </p>
 
@@ -147,14 +147,14 @@ final2 &lt;- lapply(final, function(x) data.frame(date = x$date, win = ifelse(x$
 <pre><code class="r">cal.heatMap(final2[[&quot;Minnesota Timberwolves&quot;]], &quot;win&quot;)
 </code></pre>
 
-<div class="separator" style="clear: both; text-align: center;"><img src="heat3.png" height="200" width="350"></a></div>
+<div class="separator" style="clear: both; text-align: center;"><img src="heat3.png" height="300" width="550"></a></div>
 
 <p>The Orlando Magic seemed to fall apart towards the end as well.</p>
 
 <pre><code class="r">cal.heatMap(final2[[&quot;Orlando Magic&quot;]], &quot;win&quot;)
 </code></pre>
 
-<div class="separator" style="clear: both; text-align: center;"><img src="heat4.png" height="200" width="350"></a></div>
+<div class="separator" style="clear: both; text-align: center;"><img src="heat4.png" height="300" width="550"></a></div>
 
 <p>In hindsight since the calendar heat map aspect did not pan out so well there may be better ways to visualize this data. I do like that this demonstrates a fairly consistent aspect of any data science endeavour, to answer the question you started with you often have to change paths as you get further in. Data Science is dynamic, letting the data tell you what works and what doesn&#39;t will get you much farther. It also helps to have code and data that lets you change paths easily. </p>
 
