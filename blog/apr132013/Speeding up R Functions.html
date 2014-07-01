@@ -191,9 +191,8 @@ title(xlab = &quot;False Positive Rate&quot;, ylab = &quot;True Positive Rate&qu
 </code></pre>
 
 
-<pre class="r"><code>
 <div class="separator" style="clear: both; text-align: center;"><img src="Timing_1.png" height="200" width="350"></a></div>
-</code></pre>
+
 
 <pre><code class="r"># How long does this take?
 system.time(roc1(train$y, pred, gran = 0.1))
@@ -420,6 +419,20 @@ benchmark(roc1(test$y, pred, gran = 0.1), roc2(test$y, pred, gran = 0.1), roc3(t
 <a href="http://en.wikipedia.org/wiki/Sensitivity_and_specificity">Sensitivity and Specificity</a>.
 </p>
 
-</body>
+</div>
 
+
+</div>
+
+<!-- dynamically load mathjax for compatibility with --self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
 </html>
