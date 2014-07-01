@@ -1,0 +1,137 @@
+<html>
+
+<head>
+<style type="text/css">.knitr.inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}, 
+.warning {
+	font-weight: bold;
+} 
+.message {
+	font-style: italic;
+} 
+.source, .output, .warning, .error, .message {
+	padding: 0em 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f7f7f7;
+}
+.rimage.left {
+  text-align: left;
+}
+.rimage.right {
+  text-align: right;
+}
+.rimage.center {
+  text-align: center;
+}
+
+.source {
+  color: #333333;
+}
+.background {
+  color: #F7F7F7;
+}
+
+.number {
+  color: #000000;
+}
+
+.functioncall {
+  color: #800054;
+  font-weight: bolder;
+}
+
+.string {
+  color: #9999FF;
+}
+
+.keyword {
+  font-weight: bolder;
+  color: black;
+}
+
+.argument {
+  color: #B04005;
+}
+
+.comment {
+  color: #2E9957;
+}
+
+.roxygencomment {
+  color: #707AB3;
+}
+
+.formalargs {
+  color: #B04005;
+}
+
+.eqformalargs {
+  color: #B04005;
+}
+
+.assignement {
+  font-weight: bolder;
+  color: #000000;
+}
+
+.package {
+  color: #96B525;
+}
+
+.slot {
+  font-style: italic;
+}
+
+.symbol {
+  color: #000000;
+}
+
+.prompt {
+  color: #333333;
+}
+</style>
+<title>GDF</title>
+</head>
+
+<body>
+
+<b>GDF</b>
+
+<p>Run a decsion tree model on datasets in 1, 2, and 3
+diminsions. Evaluate the generalized degrees of freedom 
+for each.
+
+<div class="chunk"><div class="rcode"><div class="source"><pre class="knitr r"><span class="functioncall">library</span>(boRg)
+</pre></div><div class="message"><pre class="knitr r">## Loading required package: Rcpp
+</pre></div><div class="source"><pre class="knitr r">
+<span class="comment"># Test cases</span>
+k &lt;- <span class="functioncall">gdfRange</span>(<span class="functioncall">gen1dData</span>(100, 0.5), treeModelTrainer, 1:5, obs = 20)
+
+j &lt;- <span class="functioncall">gdfRange</span>(<span class="functioncall">gen2dData</span>(100, 0.5), treeModelTrainer, 1:5, obs = 20)
+
+l &lt;- <span class="functioncall">gdfRange</span>(<span class="functioncall">gen3dData</span>(100, 0.5), treeModelTrainer, 1:5, obs = 20)
+</pre></div></div></div>
+
+
+<p>Here are the plots for each of the datasets.</p>
+
+<div class="chunk"><div class="rcode"><div class="source"><pre class="knitr r"><span class="functioncall">plotGDF</span>(k)
+</pre></div></div><div class="rimage default"><img src="figure/unnamed-chunk-2.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" class="plot" /></div></div>
+
+<div class="chunk"><div class="rcode"><div class="source"><pre class="knitr r"><span class="functioncall">plotGDF</span>(j)
+</pre></div></div><div class="rimage default"><img src="figure/unnamed-chunk-3.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" class="plot" /></div></div>
+
+<div class="chunk"><div class="rcode"><div class="source"><pre class="knitr r"><span class="functioncall">plotGDF</span>(l)
+</pre></div></div><div class="rimage default"><img src="figure/unnamed-chunk-4.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" class="plot" /></div></div>
+
+
+</body>
+</html>

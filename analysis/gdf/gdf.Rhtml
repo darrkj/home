@@ -1,0 +1,42 @@
+<html>
+
+<head>
+<title>GDF</title>
+</head>
+
+<body>
+
+<b>GDF</b>
+
+<p>Run a decsion tree model on datasets in 1, 2, and 3
+diminsions. Evaluate the generalized degrees of freedom 
+for each.
+
+<!--begin.rcode
+library(boRg)
+
+# Test cases
+k <- gdfRange(gen1dData(100, 0.5), 
+               treeModelTrainer, 1:5, obs=20)
+ 
+j <- gdfRange(gen2dData(100, 0.5), 
+               treeModelTrainer, 1:5, obs=20)
+ 
+l <- gdfRange(gen3dData(100, 0.5), 
+               treeModelTrainer, 1:5, obs=20)
+end.rcode-->
+
+<p>Here are the plots for each of the datasets.</p>
+
+<!--begin.rcode fig.width=7, fig.height=6
+plotGDF(k)
+end.rcode-->
+<!--begin.rcode fig.width=7, fig.height=6
+plotGDF(j)
+end.rcode-->
+<!--begin.rcode fig.width=7, fig.height=6
+plotGDF(l)
+end.rcode-->
+
+</body>
+</html>

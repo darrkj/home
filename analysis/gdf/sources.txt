@@ -1,0 +1,7 @@
+http://www-stat.stanford.edu/~tibs/ElemStatLearn/datasets/waveform.test
+
+http://archive.ics.uci.edu/ml/machine-learning-databases/statlog/german/
+
+http://archive.ics.uci.edu/ml/machine-learning-databases/thyroid-disease/
+
+http://archive.ics.uci.edu/ml/machine-learning-databases/diabetes/
