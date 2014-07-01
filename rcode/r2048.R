@@ -144,6 +144,6 @@ r2048 <- function(a = F) {
   }
   
   
-  if(a = T) auto_play2(gen_board()) else auto_play(gen_board())
+  if(a == T) auto_play2(gen_board()) else auto_play(gen_board())
   
 }
