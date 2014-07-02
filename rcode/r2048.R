@@ -1,4 +1,4 @@
-r2048 <- function(a = F, p = c(.4, .05, .15, .4)) {
+r2048 <- function(pr = c(.4, .05, .15, .4)) {
   
   # Generate an initial game board
   gen_board <- function() {
@@ -9,18 +9,18 @@ r2048 <- function(a = F, p = c(.4, .05, .15, .4)) {
   }
   
   # Print the game board to the screen if playing interactively
-  print_board <- function(b) {
-    for(i in seq(4)) {
-      for (j in seq(4)) {
-        if (b[i, j] == 0) {
-          cat('  .  ')
-        } else {
-          cat(' ', b[i, j], ' ')
-        }
-      }
-      cat('\n')
-    }
-  }
+#   print_board <- function(b) {
+#     for(i in seq(4)) {
+#       for (j in seq(4)) {
+#         if (b[i, j] == 0) {
+#           cat('  .  ')
+#         } else {
+#           cat(' ', b[i, j], ' ')
+#         }
+#       }
+#       cat('\n')
+#     }
+#   }
   
   # Is the given move valid
   valid_move <- function(b, dir) {
@@ -100,7 +100,7 @@ r2048 <- function(a = F, p = c(.4, .05, .15, .4)) {
   
   
   agg <- function(b, dir) {
-    if(valid_move(b, dir) | condense(b, dir)) {
+    #if(valid_move(b, dir) | condense(b, dir)) {
       b <- move(b, dir)
       b <- if(dir == 'd') apply(b, 2, ind)
       else if (dir == 'u') apply(b, 2, ind2)
@@ -109,41 +109,37 @@ r2048 <- function(a = F, p = c(.4, .05, .15, .4)) {
       b <- move(b, dir)
       b[sample(which(b == 0), 1)] <- 2
       b
-    } else b
+    #} else b
   }
   
-  
+  selection <- function(b) {
+    x <- sapply(c('l', 'r', 'u', 'd'), function(x) valid_move(b, x))
+    y <- sapply(c('l', 'r', 'u', 'd'), function(x) condense(b, x))
+    x | y
+  }
   
   # If you really want to play you can use this.
-  play <- function(b) {
-    print_board(b)
-    while(not_game_over(b)) {
-      n <- scan(nmax = 1, quiet = T, what = character())
-      b <- agg(b, n)
-      print_board(b)
-    }
-    print('Game Over')
-  }
-  
-  # Most simple stratagy.
-  auto_play <- function(b) {
-    while(not_game_over(b)) {
-      n <- sample(c('l', 'r', 'u', 'd'), 1)
-      b <- agg(b, n)
-    }
-    max(b)
-  }
+#   play <- function(b) {
+#     print_board(b)
+#     while(not_game_over(b)) {
+#       n <- scan(nmax = 1, quiet = T, what = character())
+#       b <- agg(b, n)
+#       print_board(b)
+#     }
+#     print('Game Over')
+#   }
   
    
-  auto_play2 <- function(b) {
+  auto_play <- function(b, p) {
     while(not_game_over(b)) {
-      n <- sample(c('l', 'r', 'u', 'd'), 1, prob = p)
+      sel <- selection(b)
+      posMove <- c('l', 'r', 'u', 'd')[sel]
+      n <- sample(posMove, 1, prob = (p[sel] / sum(p[sel])))
       b <- agg(b, n)
     }
     max(b)
   }
   
-  
-  if(a == T) auto_play2(gen_board()) else auto_play(gen_board())
+  auto_play(gen_board())
   
 }
