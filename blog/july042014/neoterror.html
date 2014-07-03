@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>Neo4j Soc Bal</title>
+
+
+<title>Writer Monads</title>
+
+<link rel="stylesheet" type="text/css" href="../../stylesheets/blog.css">
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: rgb(88, 72, 246)
+   }
+
+   pre .number {
+     color: rgb(0, 0, 205);
+   }
+
+   pre .comment {
+     color: rgb(76, 136, 107);
+   }
+
+   pre .keyword {
+     color: rgb(0, 0, 255);
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: rgb(3, 106, 7);
+   }
+</style>
+
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../../stylesheets/print.css" media="print" />
+
+<!-- R syntax highlighter -->
+<script src="../../javascripts/r.js"></script>
+
+
+</head>
+
+<body>
+
+<div class="container">
+
+
+    <header>
+      <div class="container">
+        <h1>Simplifying Things with Neo4j</h1>
+        <h2></h2>
+
+<h4 class="author"><em>Kenny Darrell</em></h4>
+<h4 class="date"><em>July 4, 2014</em></h4>
+        </section>
+      </div>
+    </header>
+
+
+
+
+<p>Last time I walked through the Social Balance problem on networks of terroroist orgaizations. One thing that was interesting is that after all of the data was collected the code code became very awkward. Trying to create algorithms and traversals on graphs in R is not natural. There is a really nice solution to this problem as well. a few posts back I wrote about creating some wrappers around Neo4j to use from R. There is now a nice package wraps much more functionality up in a very usable manner. This gets rid of the code that we to traverse the graph. We only have to worry about gettin gthe data into a Neo4j database.</p>
+<p>Lets start the data that was a available last time. This means that we have just used R for scraping and cleaning task. This code was all pretty standard.</p>
+<p>ADD FILE HERE</p>
+<pre class="r"><code>options(stringsAsFactors = FALSE)
+library(igraph)
+load('terrorNet.rda')</code></pre>
+<p>First we need make sure we have an instance of Neo4j up and running. Without going into to many details you need to <a href="http://www.neo4j.org/download">download Neo4j</a>. Once you unzip you can use the commands below on a Mac.</p>
+<pre><code>cd neo4j-community-2.0.3
+bin/neo4j start</code></pre>
+<p>If you use a broswer and navigate to <code>http://localhost:7474/</code> you can see if it is indeed up and running.</p>
+<p>Next we need to load the RNeo4j package. To get this setup there are instruction <a href="http://nicolewhite.github.io/RNeo4j/">here</a>. Once it is loaded we have to create a connection to the database instance.</p>
+<pre class="r"><code>library(RNeo4j)</code></pre>
+<pre><code>## Disclaimer: This package is in pre-alpha phase. It is not optimized and it has not been thoroughly tested. Make a copy of your database before connecting with this package.</code></pre>
+<pre class="r"><code>graph = startGraph(&quot;http://localhost:7474/db/data/&quot;)</code></pre>
+<p>There are a few steps of preperation needed, but these are minor. We need to create</p>
+<pre class="r"><code># Create the unique set of all orgainzations
+nodes &lt;- unique(rbind(data.frame(id = net$from, name = net$fromn),
+                      data.frame(id = net$to,   name = net$ton)))
+
+# These will hold pointers to the node in the database when we create edges.
+neoNodes &lt;- list()
+
+# Loop through all nodes and insert into db, retaining pointer.
+for(i in 1:nrow(nodes)) {
+  neoNodes[[i]] = createNode(graph, label = &quot;Terror&quot;, name = nodes$id[i], 
+                           aka = nodes$name[i]) 
+}
+
+# Now we add each edge to the db as a relationship.
+for (i in 1:nrow(net)) {
+  # Get index for which nodes are in this edge.
+  from &lt;- which(nodes == net$from[i])
+  to &lt;- which(nodes == net$to[i])
+  # Add to db.
+  createRel(from]], net$conn[i], neoNodes[[to]], how = net$type[i])
+}</code></pre>
+<pre class="r"><code>q &lt;- 'MATCH (a)-[r:hates]-&gt;(b)&lt;-[s:likes]-(c), (a)-[t:hates]-&gt;(c) 
+      return a.aka, b.aka, c.aka;'
+tri &lt;- cypher(graph, query = q)</code></pre>
+<pre class="r"><code>devtools::source_url('http://darrkj.github.io/home/rcode/d3plot.R')
+
+triples &lt;- rbind(data.frame(Source = tri[, 1], Target = tri[, 2]),
+           data.frame(Source = tri[, 1], Target = tri[, 3]),
+           data.frame(Source = tri[, 2], Target = tri[, 3]))
+
+
+d3plot(triples, 700, 600)</code></pre>
+
+
+</div>
+
+
+<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/july042014/neoterror" width="600" height="700"></iframe></div>
+
+
+
+
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with --self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
