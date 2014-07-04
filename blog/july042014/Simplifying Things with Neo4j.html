@@ -71,9 +71,9 @@
 
 
 <h3>Introduction</h3>
-<p>Last time I walked through the Social Balance problem on networks of terroroist orgaizations. One thing that was interesting is that after all of the data was collected the code became very awkward. Trying to create algorithms and traversals on graphs in R is not very natural. There is a really nice solution to this problem though. A few posts back I wrote about creating some wrappers around Neo4j to use from R. There is now a nice package that wraps a much larger set of functionality in one cohesive package. You can find more info on this at the packages Github <a href="https://github.com/nicolewhite/Rneo4j">repo</a>. This allows us to get rid of the code used to traverse the graph graph for triangles and evaluate social balance rules on them. We only have to worry about getting the data into a Neo4j database.</p>
+<p>Last time I walked through the Social Balance problem on networks of terrorist organizations. One thing that was interesting is that after all of the data was collected the code became very awkward. Trying to create algorithms and traversals on graphs in R is not very natural. There is a really nice solution to this problem though. A few posts back I wrote about creating some wrappers around Neo4j to use from R. There is now a nice package that wraps a much larger set of functionality in one cohesive package. You can find more info on this at the packages Github <a href="https://github.com/nicolewhite/Rneo4j">repo</a>. This allows us to get rid of the code used to traverse the graph graph for triangles and evaluate social balance rules on them. We only have to worry about getting the data into a Neo4j database.</p>
 
-<p>Lets start with the data that was used last time in its cleanest state. This means that we have just used R for scraping and cleaning of teh data. This code was all pretty standard.</p>
+<p>Lets start with the data that was used last time in its cleanest state. This means that we have just used R for scraping and cleaning of the data. This code was all pretty standard.</p>
 
 You can download the data up to this point from the link below.
 <p><a href="terrorNet.rda">Cleaned Data</a></p>
@@ -84,18 +84,18 @@ load('terrorNet.rda')</code></pre>
 
 <h3>Setup</h3>
 
-<p>First we need make sure we have an instance of Neo4j up and running. Without going into too many of the details you need to download Neo4J, instrcution for doing this can be found <a href="http://www.neo4j.org/download">here</a>. Once installation has been done you can use the commands below on a Mac to get Neo4j up and running.</p>
+<p>First we need make sure we have an instance of Neo4j up and running. Without going into too many of the details you need to download Neo4J, instructions for doing this can be found <a href="http://www.neo4j.org/download">here</a>. Once installation has been done you can use the commands below on a Mac to get Neo4j up and running.</p>
 
 <pre><code>cd neo4j-community-2.0.3
 bin/neo4j start</code></pre>
-<p>If you use a broswer and navigate to <code>http://localhost:7474/</code> you can validate that it is indeed up and running.</p>
+<p>If you use a browser and navigate to <code>http://localhost:7474/</code> you can validate that it is indeed up and running.</p>
 <p>Next we need to load the RNeo4j package. To get this setup there are instructions <a href="http://nicolewhite.github.io/RNeo4j/">here</a>. Once it is loaded we have to create a connection to the database instance.</p>
 <pre class="r"><code>library(RNeo4j)
 graph = startGraph(&quot;http://localhost:7474/db/data/&quot;)</code></pre>
 
 <h3>Load</h3>
 
-<p>There are a few steps of preperation needed, but these are minor. We need to insert the data into the database. This is done using the functionality provided by the RNeo4j package.</p>
+<p>There are a few steps of preparation needed, but these are minor. We need to insert the data into the database. This is done using the functionality provided by the RNeo4j package.</p>
 <pre class="r"><code># Create the unique set of all orgainzations
 nodes &lt;- unique(rbind(data.frame(id = net$from, name = net$fromn),
                       data.frame(id = net$to,   name = net$ton)))
@@ -120,7 +120,7 @@ for (i in 1:nrow(net)) {
 
 <h3>Cypher</h3>
 
-<p>Now that all of the data is loaded we can use Cypher, a query language in Neo4j, to do all of the heavy lifting. This basically boils down to writing a query for the data that we want. We can do both steps in one, finding triangles and resolving there adherance to social balance.</p>
+<p>Now that all of the data is loaded we can use Cypher, a query language in Neo4j, to do all of the heavy lifting. This basically boils down to writing a query for the data that we want. We can do both steps in one, finding triangles and resolving there adherence to social balance.</p>
 
 
 <pre class="r"><code>q &lt;- 'MATCH (a)-[r:hates]-&gt;(b)&lt;-[s:likes]-(c), (a)-[t:hates]-&gt;(c) 
