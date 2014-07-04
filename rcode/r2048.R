@@ -1,4 +1,4 @@
-r2048 <- function(pr = c(.4, .05, .15, .4)) {
+#r2048 <- function(pr = c(.4, .05, .15, .4)) {
   
   # Generate an initial game board
   gen_board <- function() {
@@ -129,6 +129,7 @@ r2048 <- function(pr = c(.4, .05, .15, .4)) {
 #     print('Game Over')
 #   }
   
+
    
   auto_play <- function(b, p) {
     while(not_game_over(b)) {
@@ -136,10 +137,17 @@ r2048 <- function(pr = c(.4, .05, .15, .4)) {
       posMove <- c('l', 'r', 'u', 'd')[sel]
       n <- sample(posMove, 1, prob = (p[sel] / sum(p[sel])))
       b <- agg(b, n)
+      b
     }
-    max(b)
+    c(sum(b), max(b))
   }
   
-  auto_play(gen_board())
+ # auto_play(gen_board(), pr) 
   
-}
+#}
+
+#auto_play(gen_board(), pr)
+
+#auto_play(gen_board(), c(.25, .25, .25, .25)) 
+  
+
