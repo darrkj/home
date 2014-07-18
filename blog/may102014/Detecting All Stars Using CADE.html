@@ -71,10 +71,10 @@
 
 
 <p>I recentely listend to <a href="https://www.cs.umass.edu/faculty/directory/jensen_david">David Jensen</a> give a brief overview of an anomaly detection method called <a href="http://people.cs.umass.edu/~lfriedl/pubs/SDM2014-paper.pdf">CADE</a> or <a href="http://people.cs.umass.edu/~lfriedl/pubs/SDM2014-supp.pdf">Classifier Adjusted Density Estimation</a>. The method seemed very easy to grasp at first which is not usualy the case for recently published machine learning work. I can never resist trying to implement these things myself on a toy example to learn what makes them tick and if they really deliver on what they promise.</p>
-<p>I wanted to try to create an example that will find anomolous players in the NBA. I think in order to do this I may have to expand on some of the later steps of this methodolgy though. But first we need some data. Lets walk through the steps I am using to get this data.</p>
+<p>I wanted to try to create an example that will find anomalous players in the NBA. I think in order to do this I may have to expand on some of the later steps of this methodolgy though. But first we need some data. Lets walk through the steps I am using to get this data.</p>
 
 <h3>Setup</h3>
-<p>I have a <a href="https://github.com/darrkj/CadeAllStar">package</a> on Github that we will utilize to get data. First we need to get this functionality installed. The code is actaully very similar to some code I have used in previous posts except I realized some of the sites have changed and we only need a subset of that functionality.</p>
+<p>I have a <a href="https://github.com/darrkj/CadeAllStar">package</a> on Github that we will utilize to get data. First we need to get this functionality installed. The code is actually very similar to some code I have used in previous posts except I realized some of the sites have changed and we only need a subset of that functionality.</p>
 <pre class="r"><code>require(plyr)
 require(XML)
 require(devtools)
@@ -83,7 +83,7 @@ require(randomForest)
 install_github('darrkj/CadeAllStar')
 
 require(CadeAllStar)</code></pre>
-<p>Before we proceed I should explain a bit more about what I am attempting to do here. I am hoping to find the best players in the league, All Stars, in order to do that I am going to try to find those which are the largest outliers. In doing this I may find some players that are not all stars but different for some other reason which will also be interesting. The methodology being used looks at player-days, statistics from a single game for a specific player. It then finds the player-games that are anomolous to the rest of the player-game population. My intuition tells me that I can aggregate these games up to the player level and have and ordering of players. Those that are the furthest out should contain the group of all stars, possibly including other groups of players as well. I will attempt to explain the details of the actual outlier detection method as it is needed.</p>
+<p>Before we proceed I should explain a bit more about what I am attempting to do here. I am hoping to find the best players in the league, All Stars, in order to do that I am going to try to find those which are the largest outliers. In doing this I may find some players that are not all stars but different for some other reason which will also be interesting. The methodology being used looks at player-days, statistics from a single game for a specific player. It then finds the player-games that are anomalous to the rest of the player-game population. My intuition tells me that I can aggregate these games up to the player level and have and ordering of players. Those that are the furthest out should contain the group of all stars, possibly including other groups of players as well. I will attempt to explain the details of the actual outlier detection method as it is needed.</p>
 <pre class="r"><code># You can pull all data for the 2013 season via the following code.
 season &lt;- seasonify(2013)</code></pre>
 <pre class="r"><code># Or use the 2013 season that comes with the R package.
@@ -97,7 +97,7 @@ head(season[, 1:3])</code></pre>
 ## 294       Dallas Mavericks           Utah Jazz 2012-10-31
 ## 335         Denver Nuggets  Philadelphia 76ers 2012-10-31
 ## 406  Golden State Warriors        Phoenix Suns 2012-10-31</code></pre>
-<p>Now we have an entire season of NBA games. This is still only the games though. We need to capture each players’ stats for each of these games. We are only going to pull the basic statistics. This will also take a while so I would recomend using the data in the package.</p>
+<p>Now we have an entire season of NBA games. This is still only the games though. We need to capture each players’ stats for each of these games. We are only going to pull the basic statistics. This will also take a while so I would recommend using the data in the package.</p>
 <pre class="r"><code># Pull statistics for a season of games
 stats &lt;- pull_stats(season)</code></pre>
 <p>Or load it from the package.</p>
@@ -114,12 +114,12 @@ head(stats[, 1:3])</code></pre>
 
 
 <h3>Implement the Algorithm</h3>
-<p>Now on to the technichal aspects. The heart of CADE relies on two things:</p>
+<p>Now on to the technical aspects. The heart of CADE relies on two things:</p>
 <ol style="list-style-type: decimal">
 <li>Creating uniform distributions over variables</li>
 <li>Generate a classifier which can produce a probability</li>
 </ol>
-<p>The followng function takes care of the uniform distribution by taking a varaible that may have any type of distribution and returns one with the same length and range but is uniformly distributed.</p>
+<p>The following function takes care of the uniform distribution by taking a variable that may have any type of distribution and returns one with the same length and range but is uniformly distributed.</p>
 <pre class="r"><code>uni &lt;- function(x, len = length(x)) {
   if ( is.integer(x) ) {
     sample(min(x):max(x), len, replace = TRUE)
@@ -196,7 +196,7 @@ rev(sort(table(stats$player[1:30])))</code></pre>
 ##                 1
 
 </code></pre>
-<p>Even though it is somehat subjective to as to who is better than who in the NBA, I think there would be little down that these are not some of the best players of 2013. How would these results line up against the actual 2013 Allstar Game?</p>
+<p>Even though it is somewhat subjective to as to who is better than who in the NBA, I think there would be little down that these are not some of the best players of 2013. How would these results line up against the actual 2013 Allstar Game?</p>
 <p>First we have to find a way to get rid of player-game values and just get values based on player. I thhought over just counts under some threshold but I could not think of any way to determine this threshold. It was all kind of arbitrary. Adding probabilities up is not something that commonly pops up. This may be okay here though, I know the sum is no longer any way a probability, some will rise above 1.</p>
 <pre class="r"><code># Aggregate the per game score up to just the player
 rank &lt;- ddply(stats, .(player), summarise, score = sum(prob))
