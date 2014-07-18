@@ -173,7 +173,7 @@ hist(uni(test))</code></pre>
 
 <h3>Application</h3>
 <p>Everything is now in place to try out our experiment. We need to pass the data into the CADE function, only the fields that are needed though. Since the result of the function is a new data frame with a field called prob, we can just take take that field and assign it to the data we pass into the function.</p>
-<pre class="r"><code># Run cade on data, this takes a minute, for analysis only use relevent fields.
+<pre class="r"><code># Run cade on data, this takes a minute, for analysis only use relevant fields.
 stats$prob &lt;- cade(subset(stats, select = -c(player, date, guid)))$prob
 
 # Order by most likely to be an outlier.
