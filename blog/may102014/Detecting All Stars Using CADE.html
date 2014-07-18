@@ -70,8 +70,8 @@
 
 
 
-<p>I recentely listend to <a href="https://www.cs.umass.edu/faculty/directory/jensen_david">David Jensen</a> give a brief overview of an anomaly detection method called <a href="http://people.cs.umass.edu/~lfriedl/pubs/SDM2014-paper.pdf">CADE</a> or <a href="http://people.cs.umass.edu/~lfriedl/pubs/SDM2014-supp.pdf">Classifier Adjusted Density Estimation</a>. The method seemed very easy to grasp at first which is not usualy the case for recently published machine learning work. I can never resist trying to implement these things myself on a toy example to learn what makes them tick and if they really deliver on what they promise.</p>
-<p>I wanted to try to create an example that will find anomalous players in the NBA. I think in order to do this I may have to expand on some of the later steps of this methodolgy though. But first we need some data. Lets walk through the steps I am using to get this data.</p>
+<p>I recently listened to <a href="https://www.cs.umass.edu/faculty/directory/jensen_david">David Jensen</a> give a brief overview of an anomaly detection method called <a href="http://people.cs.umass.edu/~lfriedl/pubs/SDM2014-paper.pdf">CADE</a> or <a href="http://people.cs.umass.edu/~lfriedl/pubs/SDM2014-supp.pdf">Classifier Adjusted Density Estimation</a>. The method seemed very easy to grasp at first which is not usually the case for recently published machine learning work. I can never resist trying to implement these things myself on a toy example to learn what makes them tick and if they really deliver on what they promise.</p>
+<p>I wanted to try to create an example that will find anomalous players in the NBA. I think in order to do this I may have to expand on some of the later steps of this methodology though. But first we need some data. Lets walk through the steps I am using to get this data.</p>
 
 <h3>Setup</h3>
 <p>I have a <a href="https://github.com/darrkj/CadeAllStar">package</a> on Github that we will utilize to get data. First we need to get this functionality installed. The code is actually very similar to some code I have used in previous posts except I realized some of the sites have changed and we only need a subset of that functionality.</p>
@@ -144,7 +144,7 @@ hist(uni(test))</code></pre>
 
 
 
-<p>Now the rest of CADE is just about creating predictions. The predictions are of cases that are outliers. To do this we make a naive assumption that none of our data is an outlier. Thus we will create a new target varaible y, and give it all values of 0. Then we need to take the fake uniform data that is tructurally the same and give it the same target variable y but only call of the outliers so they get a value of 1. Then we combine these data sets into one and run a machine learning algorithm on them which is able to return a probability instead of a predicted class outcome. Then we use this classifier to evaluate our original data. We call this predicted probability the probability of being an outlier.</p>
+<p>Now the rest of CADE is just about creating predictions. The predictions are of cases that are outliers. To do this we make a naive assumption that none of our data is an outlier. Thus we will create a new target variable y, and give it all values of 0. Then we need to take the fake uniform data that is structurally the same and give it the same target variable y but only call of the outliers so they get a value of 1. Then we combine these data sets into one and run a machine learning algorithm on them which is able to return a probability instead of a predicted class outcome. Then we use this classifier to evaluate our original data. We call this predicted probability the probability of being an outlier.</p>
 <pre class="r"><code>cade &lt;- function(df, numTree = 500) {
   stopifnot(is.data.frame(df))
 
@@ -197,7 +197,7 @@ rev(sort(table(stats$player[1:30])))</code></pre>
 
 </code></pre>
 <p>Even though it is somewhat subjective to as to who is better than who in the NBA, I think there would be little down that these are not some of the best players of 2013. How would these results line up against the actual 2013 Allstar Game?</p>
-<p>First we have to find a way to get rid of player-game values and just get values based on player. I thhought over just counts under some threshold but I could not think of any way to determine this threshold. It was all kind of arbitrary. Adding probabilities up is not something that commonly pops up. This may be okay here though, I know the sum is no longer any way a probability, some will rise above 1.</p>
+<p>First we have to find a way to get rid of player-game values and just get values based on player. I thought over just counts under some threshold but I could not think of any way to determine this threshold. It was all kind of arbitrary. Adding probabilities up is not something that commonly pops up. This may be okay here though, I know the sum is no longer any way a probability, some will rise above 1.</p>
 <pre class="r"><code># Aggregate the per game score up to just the player
 rank &lt;- ddply(stats, .(player), summarise, score = sum(prob))
 
@@ -214,7 +214,7 @@ head(rank)</code></pre>
 ## 59  Carmelo Anthony 4.058    4
 ## 136   Dwight Howard 4.022    5
 ## 278     Kobe Bryant 3.938    6</code></pre>
-<p>This look great</p>
+<p>This looks great</p>
 
 <div id="results" class="section level3">
 <h3>Results</h3>
@@ -269,8 +269,8 @@ al2013</code></pre>
 
 <h3>Conclusion</h3>
 <p>It seems to work pretty well. There are few ways I think it can be expanded. I only pulled the basic stats but there are is whole plethora of <a href="http://www.basketball-reference.com/playoffs/NBA_2014_ECS.html">advanced</a> stats available from the same source. There is also some newly available <a href="http://stats.nba.com/gameDetail.html?GameID=0041300211&amp;tabView=playertracking">statistics</a> that come from the <a href="http://www.stats.com/sportvu/basketball.asp">SportVU</a> <a href="http://stats.nba.com/playerTracking.html">cameras</a>. These data points may give better lift over some of the more basic stats used here.</p>
-<p>I also wanted to try it compared to a few outer methods to see how well it worked. I started down the path to do a comparison but but hit a roadbloack with the data preprocessing, most other methods depend on lost of up front normalization. One major advantage is that I had to do very little cleaning to get this method to work. Everything else depends on certain normal like distributions, this method is pretty robust leading to quicker results.</p>
-<p>I also should look at some of the players between those in the Allstar game. Were they the outliers on the other side, the worst players in the league. Often figureing out what makes them an outlier is harder than finding out who are the actual outliers. It also takes a lot of domain knowledge.</p>
+<p>I also wanted to try it compared to a few outer methods to see how well it worked. I started down the path to do a comparison but but hit a roadblock with the data preprocessing, most other methods depend on lost of up front normalization. One major advantage is that I had to do very little cleaning to get this method to work. Everything else depends on certain normal like distributions, this method is pretty robust leading to quicker results.</p>
+<p>I also should look at some of the players between those in the Allstar game. Were they the outliers on the other side, the worst players in the league. Often figuring out what makes them an outlier is harder than finding out who are the actual outliers. It also takes a lot of domain knowledge.</p>
 <div class="references">
 
 </div>
