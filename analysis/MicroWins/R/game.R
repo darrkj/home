@@ -231,7 +231,7 @@ gameScoreTS <- function(game) {
   }
   
   pp$diff <- pp[, w] - pp[, l]
-  
+  names(pp) <- c('time', 'diff')
   pp[, c(1, 4)]
 }
 

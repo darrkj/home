@@ -55,6 +55,24 @@ rm(lk, a, b, i, j, len, xx, tmp)
 
 ###############################################################################
 
+
+# Picka game and find the closest.
+
+
+plotGame <- function(game) {
+  
+  idx <- order(v[, game])
+  idx <- setdiff(idx, game)
+  
+  print(season[game, 1:5])
+  par(mfrow=c(3,1))
+  #layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))
+  plot(y[[idx[1]]])
+  plot(y[[game]])
+  plot(y[[idx[length(idx)]]])
+}
+
+###############################################################################
 dd <- sort(v)
 
 min(v)
