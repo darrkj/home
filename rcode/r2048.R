@@ -100,16 +100,16 @@
   
   
   agg <- function(b, dir) {
-    #if(valid_move(b, dir) | condense(b, dir)) {
       b <- move(b, dir)
       b <- if(dir == 'd') apply(b, 2, ind)
       else if (dir == 'u') apply(b, 2, ind2)
       else if (dir == 'l') t(apply(b, 1, ind))
       else t(apply(b, 1, ind2))
       b <- move(b, dir)
-      b[sample(which(b == 0), 1)] <- 2
+      set <- which(b == 0)
+      set <- if(length(set) == 1) set else sample(set, 1)
+      b[set] <- 2
       b
-    #} else b
   }
   
   selection <- function(b) {
@@ -132,22 +132,18 @@
 
    
   auto_play <- function(b, p) {
+    j <- 1
+    p <- p + .001
     while(not_game_over(b)) {
       sel <- selection(b)
       posMove <- c('l', 'r', 'u', 'd')[sel]
       n <- sample(posMove, 1, prob = (p[sel] / sum(p[sel])))
       b <- agg(b, n)
+      j <- j + 1
       b
     }
-    c(sum(b), max(b))
+    c(sum(b), max(b), j)
   }
   
- # auto_play(gen_board(), pr) 
-  
-#}
-
-#auto_play(gen_board(), pr)
 
 #auto_play(gen_board(), c(.25, .25, .25, .25)) 
-  
-
