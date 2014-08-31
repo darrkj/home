@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="x-ua-compatible" content="IE=9" >
 
-<title>Neo4j Soc Bal</title>
+<title>Activity Tracker</title>
 
 
 <link rel="stylesheet" type="text/css" href="../../stylesheets/blog.css">
@@ -44,7 +44,7 @@
 
 
 <div id="header">
-<h1 class="title">Making your own pedometer</h1>
+<h1 class="title">Making Your Own Activity Tracker</h1>
 <h4 class="author"><em>Kenny Darrell</em></h4>
 <h4 class="date"><em>August 30, 2014</em></h4>
 </div>
@@ -149,7 +149,7 @@ str(loc)</code></pre>
   # says log output.
   loc &lt;- read.csv(log, sep = ';', header = F, skip = skip, stringsAsFactors = F)
   
-  # There are teo semi colons in a row 
+  # There are two semi colons in a row 
   loc$V3 &lt;- NULL
   # The line ends with a semi colon
   loc$V11 &lt;- NULL
@@ -176,22 +176,7 @@ str(loc)</code></pre>
 #x &lt;- read.log('LOG_2014-04-06_20-39-37_Random.log')</code></pre>
 <p>Before we do anything with the sensor data I want to look at it on a map.</p>
 <pre class="r"><code>library(googleVis)</code></pre>
-<pre><code>## Warning: package 'googleVis' was built under R version 3.1.1</code></pre>
-<pre><code>## 
-## Welcome to googleVis version 0.5.4
-## 
-## Please read the Google API Terms of Use
-## before you start using the package:
-## https://developers.google.com/terms/
-## 
-## Note, the plot method of googleVis will by default use
-## the standard browser to display its output.
-## 
-## See the googleVis package vignettes for more details,
-## or visit http://github.com/mages/googleVis.
-## 
-## To suppress this message use:
-## suppressPackageStartupMessages(library(googleVis))</code></pre>
+
 <pre class="r"><code>plotGPS &lt;- function(path, v = 10) {
   if (v == -1) v &lt;- nrow(path)
   if (v &gt; nrow(path)) v &lt;- nrow(path)
