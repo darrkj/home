@@ -56,11 +56,11 @@ table, th, td {
 
 <p>It appears one is also a great tool for solving the other. So where to start with learning some of these things. At one point when I was a graduate student I new a fair deal about neural networks. Some of that has since faded but I thought it sufficient enough to jump in and try to use some deep learning tools. Later I can try to dig into the math.</p>
 
-<p>There are tutorials all over, some are good and some are bad. Here is a <a href="http://radar.oreilly.com/2014/07/how-to-build-and-run-your-first-deep-learning-network.html">link</a> to one that gave me some some success.</p>
+<p>There are tutorials all over, some are good and some are bad. Here is a <a href="http://radar.oreilly.com/2014/07/how-to-build-and-run-your-first-deep-learning-network.html">link</a> to one that gave me some success.</p>
 
 <h3>Setting Up the Virtual Environment</h3>
 
-<p>The first requirement you need fulfill is install <a href="http://www.vagrantup.com/">Vagrant</a> and be able to use it. This was good learning experience in itself as I have been meaning to learn one of these virtual development environment tools. I can't say that I am expert but it was fairly easy to get up to speed and feel comfortable with this one. I am sure there are lots more that they can do but I already see the value in them. </p>
+<p>The first requirement you need to fulfill is to install <a href="http://www.vagrantup.com/">Vagrant</a> and be able to use it. This was a great learning experience in itself as I have been meaning to learn one of these virtual development environment tools. I can't say that I am an expert but it was fairly easy to get up to speed and feel comfortable with this one. I am sure my knowledge only scratched the surface but I already see the value in them. </p>
 
 <p>Once this is setup you can run the following from the command line.</p>
 <pre><code>mkdir ~/dl_webcast
@@ -73,9 +73,7 @@ vagrant up
 
 vagrant ssh</code></pre>
 
-<p>The cool part about this virtual environment is that it already has a pre trained model included. In the tutorial it has you evaluate an image that comes preloaded.</p>
-
-<p>Now to jump right in and use the pre-build model.</p>
+<p>The real value in this virtual environment is that it already has a pre trained model included. In the tutorial it has you evaluate an image that comes preloaded. To jump right in and use the pre-build model run the python script as seen below.</p>
 <pre><code>cd ~/caffe
 python python/classify.py --print_results examples/images/cat.jpg foo</code></pre>
 
@@ -205,7 +203,7 @@ python python/classify.py --print_results examples/images/cat.jpg foo</code></pr
 </table>
  <br>
 
-<p>Wow, I am pretty impressed. I wanted to try an image I created from my phone. I sacrificed life and limb to get the picture below hoping it would be a harder test. I was also thinking this would be more of what I was thinking would be a cool application, a phone app that tells you what kind of wildlife you are looking at.</p>
+<p>Wow, I am pretty impressed. This seemed to work pretty well. Deep Learning does seem like magic at first but these are all pictures from the internet. How well will it work from real images. I wanted to try an image I created from my phone. I sacrificed life and limb to get the picture below hoping it would be a harder test. I was also thinking this would be more of how this could be utilized in a cool application, a phone app that tells you what kind of wildlife you are looking at.</p>
 
  <div class="separator" style="clear: both; text-align: center;"><img src="me.png" height="400" width="500"></a></div>
 
@@ -237,7 +235,7 @@ python python/classify.py --print_results examples/images/cat.jpg foo</code></pr
  <br>
 
 
-<p>What it thinks I am a skunk. After the bike ride it took to get here my wife agree with that classification but I sure don't. I am a ease though after investigating the probability, very low confidence in its guess here. I then wondered what would happen if I modified the picture a bit. I took off a lot of the perimeter to see if I got any better.</p>
+<p>WHAT, it thinks I am a skunk. After the bike ride it took to get there my wife may agree with that classification but I sure don't. I am at ease though after investigating the probability, it has very low confidence in its guess. I then wondered what would happen if I modified the picture a bit. I took off a lot of the perimeter to see if it got any better.</p>
 
 
  <div class="separator" style="clear: both; text-align: center;"><img src="m5.png" height="400" width="500"></a></div>
@@ -270,7 +268,7 @@ python python/classify.py --print_results examples/images/cat.jpg foo</code></pr
  <br>
 
 
-<p>That looks a little better. It does get the alligator and most importantly it does not think that I am a skunk. I think it sees me as the jersey.</p>
+<p>That looks a little better. It does get the alligator and most importantly it does not think that I am a skunk. I think it sees me as the jersey, or the the neck brace?</p>
 
 
 <h3>Conclusion</h3>
@@ -307,7 +305,7 @@ python python/classify.py --print_results examples/images/cat.jpg foo</code></pr
 </table>
  <br>
 
-<p>This is very interesting. Is is obviously wrong but I can see where it was going with the aircraft carrier, whale and the bridge. This is reassures me that these are not magic. They do a good job of classifying images but the problem is not solved to completion. I think they deserve the discussion they have been getting lately though. Perhaps I will be able to dig deeper and look at there inner workings in the future.</p>
+<p>This is very interesting. Is is obviously wrong but I can see where it was going with the aircraft carrier, whale and the bridge. This reassures me that these are not magic. They do a good job of classifying images but the problem is not solved to completion. I think they deserve the attention they have been getting lately though. Perhaps I will be able to dig deeper and look at there inner workings more in the future.</p>
 
 
 
