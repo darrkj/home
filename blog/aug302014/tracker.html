@@ -196,13 +196,15 @@ x &lt;- read.log('LOG_2014-08-30_11-59-00K330_3-axis_Accelerometer.log')
 
 plotGPS(x, v = 500)</code></pre>
 
-<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/aug302014/plot" width="600" height="700"></iframe></div>
+<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/aug302014/plot" width="600" height="500"></iframe></div>
 
 
 <pre class="r"><code>plotGPS(x, v = 3000)</code></pre>
 
 
-<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/aug302014/plot" width="600" height="700"></iframe></div>
+<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/aug302014/plot" width="600" height="500"></iframe></div>
+
+
 <pre><code>## starting httpd help server ... done</code></pre>
 <p>It looks like there is an upper limit to the numer of points I can place on the map. I can downsample it by doing the following.</p>
 <pre class="r"><code>plotGPS(x[seq(1, 5800, 16), ], v = 5900)</code></pre>
