@@ -196,29 +196,45 @@ x &lt;- read.log('LOG_2014-08-30_11-59-00K330_3-axis_Accelerometer.log')
 
 plotGPS(x, v = 500)</code></pre>
 
-<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/aug302014/plot" width="600" height="500"></iframe></div>
+<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/aug302014/plot" width="650" height="450"></iframe></div>
 
 
 <pre class="r"><code>plotGPS(x, v = 3000)</code></pre>
 
 
-<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/aug302014/plot" width="600" height="500"></iframe></div>
+<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/aug302014/plot" width="650" height="450"></iframe></div>
 
 
 <pre><code>## starting httpd help server ... done</code></pre>
 <p>It looks like there is an upper limit to the numer of points I can place on the map. I can downsample it by doing the following.</p>
 <pre class="r"><code>plotGPS(x[seq(1, 5800, 16), ], v = 5900)</code></pre>
+
+
+
+<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/aug302014/plot2" width="650" height="450"></iframe></div>
+
+
+<p>We can do much better by just removing points that have the same latitude and longitude, this was a point in time where I was standing still.</p>
+
+
 <pre class="r"><code>xx &lt;- x[!duplicated(x$LatLong), ]
-plotGPS(xx[seq(1, 1625, 16), ], v = -1)
+plotGPS(xx[seq(1, 1625, 8), ], v = -1)</code></pre>
 
-plotGPS(x[seq(1, 1625, 16), ], v = 1000)</code></pre>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
-</div>
 
+<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/aug302014/plot3" width="650" height="450"></iframe></div>
 
 </div>
 
 
+</div>
+</div>
+<div id="collecting-data" class="section level3">
+
+<h3>Conclusion</h3>
+<p>This was a proof of concept that proved that it is possible to collect the sensor data from a phone and start to use. THe next step coincides with my desire from the basketball scores post, classifyng a time series. There are a few papers I hope to read that give more insights on how to use the SAX method. I also think it would be intersting to try to develop a few even if they perform very poorly to get an understanding of the difficlutlies in this area. The bigger next step though and possibly the hardest is that I have to go out and create some labled data to train the model on. This means I have to collect data of me running and tag it as running, the same with walking and climbing stairs and other common activities. I may be in much better shape before my next post. 
+</p>
+
+</div>
 
 
 
