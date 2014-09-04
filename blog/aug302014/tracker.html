@@ -68,8 +68,7 @@
 <p>These files need a bit of work to be in a usable format. The first thing to look at is the structure of the file. It has a first line containing ‘--- LOG START --- ’</p>
 
 
-<pre class="r"><code>
-readLines('LOG_2014-08-30_11-59-00K330_3-axis_Accelerometer.log', 1)</code></pre>
+<pre class="r"><code>readLines('LOG_2014-08-30_11-59-00K330_3-axis_Accelerometer.log', 1)</code></pre>
 <pre><code>## [1] &quot;--- LOG START  --- &quot;</code></pre>
 </div>
 
@@ -82,14 +81,14 @@ readLines('LOG_2014-08-30_11-59-00K330_3-axis_Accelerometer.log', 1)</code></pre
 firstLine &lt;- readLines(log, 1)
 skip &lt;- if ( firstLine == &quot;--- LOG START  --- &quot;) 1 else 0
   
-loc &lt;- read.csv(log, skip = skip)
+path &lt;- read.csv(log, skip = skip)
 </code></pre>
 
 <p>We can also see a few other issues. We only have one column, so the file must nout use commas, it uses semicolons as delimeters. We can also see the horrible names, so the file has no header. This is pretty easy to clean up</p>
 
-<pre class="r"><code>loc &lt;- read.csv(log, sep = ';', header = F, skip = skip, stringsAsFactors = F)
+<pre class="r"><code>path &lt;- read.csv(log, sep = ';', header = F, skip = skip, stringsAsFactors = F)
 
-str(loc)</code></pre>
+str(path)</code></pre>
 <pre><code>## 'data.frame':    5967 obs. of  11 variables:
 ##  $ V1 : int  1269 1290 1311 1332 1353 1374 1395 1416 1437 1458 ...
 ##  $ V2 : chr  &quot;2014-08-30_11-59-00.732&quot; &quot;2014-08-30_11-59-01.997&quot; &quot;2014-08-30_11-59-03.233&quot; &quot;2014-08-30_11-59-04.495&quot; ...
@@ -102,7 +101,7 @@ str(loc)</code></pre>
 ##  $ V9 : num  3.09 3.09 3.09 3.09 1.45 ...
 ##  $ V10: num  8.95 8.95 8.95 8.95 9.77 ...
 ##  $ V11: logi  NA NA NA NA NA NA ...</code></pre>
-<pre class="r"><code>plot(loc$V8[1:100])</code></pre>
+<pre class="r"><code>plot(path$V8[1:100])</code></pre>
 
 
 
@@ -111,27 +110,27 @@ str(loc)</code></pre>
 <p>A few other issues we have with this data are that column one is really the timestamp but it comes in as a character. The V3 field is really an artifact of having a double delimeter where the optional sensor values appear. We have the same thing with V11 as each line ends with a delimeter. We can just remove these two. We should also give the fields some better names.</p>
 <pre class="r"><code>library(lubridate)
 # There are two semi colons in a row 
-  loc$V3 &lt;- NULL
+  path$V3 &lt;- NULL
   # The line ends with a semi colon
-  loc$V11 &lt;- NULL
+  path$V11 &lt;- NULL
   
-  names(loc) &lt;- c('inc', 'timestamp', 'lat', 'long', 'alt', 'acc', 'x', 'y', 'z')
+  names(path) &lt;- c('inc', 'timestamp', 'lat', 'long', 'alt', 'acc', 'x', 'y', 'z')
   
-  loc$date &lt;- as.Date(substr(loc$timestamp, 1, 10))
-  loc$time &lt;- ymd_hms(loc$timestamp)</code></pre>
-<p>We should also create an index field, the first field currently is the number of milliseconds from teh start time.</p>
+  path$date &lt;- as.Date(substr(path$timestamp, 1, 10))
+  path$time &lt;- ymd_hms(path$timestamp)</code></pre>
+<p>We should also create an index field, the first field currently is the number of milliseconds from the start time. It is also a good idea to turn everything that should be a number into a number.</p>
 <pre class="r"><code>loc$ind &lt;- seq(nrow(loc))
 
-isNum &lt;- lapply(c(3:9), function(x) class(loc[, x]))
+isNum &lt;- lapply(c(3:9), function(x) class(path[, x]))
 any('character' %in% isNum)</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 <pre class="r"><code>for (i in c(3:9)) {
-  loc[, i] &lt;- as.numeric(loc[, i])
+  path[, i] &lt;- as.numeric(path[, i])
 }
 
-loc$LatLong &lt;- paste(loc$lat, loc$long, sep = ':')
+path$LatLong &lt;- paste(path$lat, path$long, sep = ':')
 
-str(loc)</code></pre>
+str(path)</code></pre>
 <pre><code>## 'data.frame':    5967 obs. of  13 variables:
 ##  $ inc      : int  1269 1290 1311 1332 1353 1374 1395 1416 1437 1458 ...
 ##  $ timestamp: chr  &quot;2014-08-30_11-59-00.732&quot; &quot;2014-08-30_11-59-01.997&quot; &quot;2014-08-30_11-59-03.233&quot; &quot;2014-08-30_11-59-04.495&quot; ...
@@ -146,43 +145,40 @@ str(loc)</code></pre>
 ##  $ time     : POSIXct, format: &quot;2014-08-30 11:59:00&quot; &quot;2014-08-30 11:59:01&quot; ...
 ##  $ ind      : int  1 2 3 4 5 6 7 8 9 10 ...
 ##  $ LatLong  : chr  &quot;38.949867:-77.082375&quot; &quot;38.949867:-77.082375&quot; &quot;38.949867:-77.082375&quot; &quot;38.949867:-77.082375&quot; ...</code></pre>
-<p>We should put all of this into a function to read log files in a clean them.</p>
+<p>It is also a really good idea to put all of this into one function that can read log files and clean them in one step.</p>
 <pre class="r"><code>read.log &lt;- function(log) {
-    firstLine &lt;- readLines(log, 1)
+  firstLine &lt;- readLines(log, 1)
   skip &lt;- if ( firstLine == &quot;--- LOG START  --- &quot;) 1 else 0
   # These are seperated by semicolons and skip one becuase the first line
   # says log output.
-  loc &lt;- read.csv(log, sep = ';', header = F, skip = skip, stringsAsFactors = F)
+  path &lt;- read.csv(log, sep = ';', header = F, skip = skip, stringsAsFactors = F)
   
   # There are two semi colons in a row 
-  loc$V3 &lt;- NULL
+  path$V3 &lt;- NULL
   # The line ends with a semi colon
-  loc$V11 &lt;- NULL
+  path$V11 &lt;- NULL
   
-  names(loc) &lt;- c('inc', 'timestamp', 'lat', 'long', 'alt', 'acc', 'x', 'y', 'z')
+  names(path) &lt;- c('inc', 'timestamp', 'lat', 'long', 'alt', 'acc', 'x', 'y', 'z')
   
-  loc$date &lt;- as.Date(substr(loc$timestamp, 1, 10))
-  loc$time &lt;- ymd_hms(loc$timestamp)
-  loc$ind &lt;- seq(nrow(loc))
+  path$date &lt;- as.Date(substr(path$timestamp, 1, 10))
+  path$time &lt;- ymd_hms(path$timestamp)
+  path$ind &lt;- seq(nrow(path))
   
   # These fields should all be numbers.
   for (i in c(3:9)) {
     # Suppress warnings when NA values are introduced.
-    suppressWarnings(loc[, i] &lt;- as.numeric(loc[, i]))
+    suppressWarnings(path[, i] &lt;- as.numeric(path[, i]))
   }
   
-  loc$LatLong &lt;- paste(loc$lat, loc$long, sep = ':')
+  path$LatLong &lt;- paste(path$lat, path$long, sep = ':')
   
-  loc
+  path
 }
+</code></pre>
+<p>Before I do anything with the sensor data I really want to look at it on a map.</p>
+<pre class="r"><code>library(googleVis)
 
-
-#x &lt;- read.log('LOG_2014-04-11_07-47-03_Subway.log')
-#x &lt;- read.log('LOG_2014-04-06_20-39-37_Random.log')</code></pre>
-<p>Before we do anything with the sensor data I want to look at it on a map.</p>
-<pre class="r"><code>library(googleVis)</code></pre>
-
-<pre class="r"><code>plotGPS &lt;- function(path, v = 10) {
+plotGPS &lt;- function(path, v = 10) {
   if (v == -1) v &lt;- nrow(path)
   if (v &gt; nrow(path)) v &lt;- nrow(path)
   nn &lt;- list(LatLong = path$LatLong[1:v], Tip = path$timestamp[1:v])
@@ -197,34 +193,34 @@ str(loc)</code></pre>
   plot(m)
 }
 
-x &lt;- read.log('LOG_2014-08-30_11-59-00K330_3-axis_Accelerometer.log')
+path &lt;- read.log('LOG_2014-08-30_11-59-00K330_3-axis_Accelerometer.log')
 
+<p>That looks awesome, but we see a problem if we try to look at the whole path, or really any more than I have here.</p>
 
-plotGPS(x, v = 500)</code></pre>
-
-<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/aug302014/plot" width="650" height="450"></iframe></div>
-
-
-<pre class="r"><code>plotGPS(x, v = 3000)</code></pre>
-
+plotGPS(path, v = 500)</code></pre>
 
 <div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/aug302014/plot" width="650" height="450"></iframe></div>
 
 
-<pre><code>## starting httpd help server ... done</code></pre>
-<p>It looks like there is an upper limit to the numer of points I can place on the map. I can downsample it by doing the following.</p>
-<pre class="r"><code>plotGPS(x[seq(1, 5800, 16), ], v = 5900)</code></pre>
+<pre class="r"><code>plotGPS(path, v = 3000)</code></pre>
+
+
+<div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/aug302014/plot" width="650" height="450"></iframe></div>
+
+
+<p>It looks like there is an upper limit to the number of points I can place on the map. The map looks exactly the same and it is a clear giveaway when it says in the top left corner that some data was truncated. I can downsample it by doing the following.</p>
+<pre class="r"><code>plotGPS(path[seq(1, 5800, 16), ], v = 5900)</code></pre>
 
 
 
 <div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/aug302014/plot2" width="650" height="450"></iframe></div>
 
 
-<p>We can do much better by just removing points that have the same latitude and longitude, this was a point in time where I was standing still.</p>
+<p> That is pretty rough though. We can do much better by just removing points that have the same latitude and longitude, this was a point in time where I was standing still.</p>
 
 
-<pre class="r"><code>xx &lt;- x[!duplicated(x$LatLong), ]
-plotGPS(xx[seq(1, 1625, 8), ], v = -1)</code></pre>
+<pre class="r"><code>newPath &lt;- path[!duplicated(x$LatLong), ]
+plotGPS(newPath[seq(1, 1625, 8), ], v = -1)</code></pre>
 
 
 <div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/aug302014/plot3" width="650" height="450"></iframe></div>
