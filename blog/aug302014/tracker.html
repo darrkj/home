@@ -87,8 +87,7 @@ loc &lt;- read.csv(log, skip = skip)
 
 <p>We can also see a few other items, the file has no header, and it uses semicolons as delimeters.</p>
 
-<pre class="r"><code>loc &lt;- read.csv(log, sep = ';', header = F, 
-                    skip = skip, stringsAsFactors = F)
+<pre class="r"><code>loc &lt;- read.csv(log, sep = ';', header = F, skip = skip, stringsAsFactors = F)
 
 str(loc)</code></pre>
 <pre><code>## 'data.frame':    5967 obs. of  11 variables:
@@ -232,7 +231,7 @@ plotGPS(xx[seq(1, 1625, 8), ], v = -1)</code></pre>
 
 <div style="text-align:center;"> <iframe src="http://darrkj.github.io/home/blog/aug302014/plot3" width="650" height="450"></iframe></div>
 
-</div>
+
 
 
 </div>
