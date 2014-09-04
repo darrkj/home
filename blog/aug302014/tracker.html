@@ -85,7 +85,7 @@ skip &lt;- if ( firstLine == &quot;--- LOG START  --- &quot;) 1 else 0
 loc &lt;- read.csv(log, skip = skip)
 </code></pre>
 
-<p>We can also see a few other items, the file has no header, and it uses semicolons as delimeters.</p>
+<p>We can also see a few other issues. We only have one column, so the file must nout use commas, it uses semicolons as delimeters. We can also see the horrible names, so the file has no header. This is pretty easy to clean up</p>
 
 <pre class="r"><code>loc &lt;- read.csv(log, sep = ';', header = F, skip = skip, stringsAsFactors = F)
 
@@ -108,10 +108,8 @@ str(loc)</code></pre>
 
 <div class="separator" style="clear: both; text-align: center;"><img src="sensor.png" height="400" width="550"></a></div>
 
-<p>A few other issues we have with this data are that column one is really the timestamp but it comes in as a character. The V3 field is really an artifact of have a double delimeter in where the optional sensor values come in. We have the same thing with V11 as each line ends with a delimeter. SO we can just remove these two. We should also give the fields some better names.</p>
-<pre class="r"><code>  
-
-library(lubridate)
+<p>A few other issues we have with this data are that column one is really the timestamp but it comes in as a character. The V3 field is really an artifact of having a double delimeter where the optional sensor values appear. We have the same thing with V11 as each line ends with a delimeter. We can just remove these two. We should also give the fields some better names.</p>
+<pre class="r"><code>library(lubridate)
 # There are two semi colons in a row 
   loc$V3 &lt;- NULL
   # The line ends with a semi colon
