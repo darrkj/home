@@ -30,7 +30,8 @@
     <header>
       <div class="container">
         <h1>Making Your Own Activity Tracker</h1>
-
+        <h2></h2>
+        
         <h4 class="author"><em>Kenny Darrell</em></h4>
         <h4 class="date"><em>August 30, 2014</em></h4>
         </section>
@@ -68,31 +69,26 @@
 
 
 <pre class="r"><code>
-
-#x &lt;- readLines('LOG_2014-04-06_20-39-37_Random.log', 1)
 readLines('LOG_2014-08-30_11-59-00K330_3-axis_Accelerometer.log', 1)</code></pre>
 <pre><code>## [1] &quot;--- LOG START  --- &quot;</code></pre>
 </div>
+
 <div id="cleaning-data" class="section level3">
 <h3>Cleaning Data</h3>
-<p>We want to remove this, but I think it is useful to not modify the file itself. It should also be done in a way to check that this is the case.</p>
+<p>We need to remove this, but I think it is useful to not modify the file itself. It should also be done in a way to check that this is the case, remove it if it is there or do nothing if it is not.</p>
+
 <pre class="r"><code>log &lt;- 'LOG_2014-08-30_11-59-00K330_3-axis_Accelerometer.log'
 
 firstLine &lt;- readLines(log, 1)
 skip &lt;- if ( firstLine == &quot;--- LOG START  --- &quot;) 1 else 0
   
 loc &lt;- read.csv(log, skip = skip)
+</code></pre>
 
-
-#x &lt;- read.log('LOG_2014-04-11_07-47-03_Subway.log')
-#x &lt;- read.log('LOG_2014-04-06_20-39-37_Random.log')</code></pre>
 <p>We can also see a few other items, the file has no header, and it uses semicolons as delimeters.</p>
+
 <pre class="r"><code>loc &lt;- read.csv(log, sep = ';', header = F, 
                     skip = skip, stringsAsFactors = F)
-
-
-#x &lt;- read.log('LOG_2014-04-11_07-47-03_Subway.log')
-#x &lt;- read.log('LOG_2014-04-06_20-39-37_Random.log')
 
 str(loc)</code></pre>
 <pre><code>## 'data.frame':    5967 obs. of  11 variables:
