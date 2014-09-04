@@ -7,19 +7,19 @@
 
 <title>Activity Tracker</title>
 
-
 <link rel="stylesheet" type="text/css" href="../../stylesheets/blog.css">
 
 <!-- Styles for R syntax highlighter -->
 <link rel="stylesheet" type="text/css" href="../../stylesheets/blog2.css">
 
-    <link rel="stylesheet" type="text/css" href="../../stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="../../stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="../../stylesheets/print.css" media="print" />
+<link rel="stylesheet" type="text/css" href="../../stylesheets/stylesheet.css" media="screen" />
+
+<link rel="stylesheet" type="text/css" href="../../stylesheets/pygment_trac.css" media="screen" />
+
+<link rel="stylesheet" type="text/css" href="../../stylesheets/print.css" media="print" />
 
 <!-- R syntax highlighter -->
 <script src="../../javascripts/r.js"></script>
-
 
 </head>
 
@@ -27,37 +27,47 @@
 
 <div class="container">
 
-
     <header>
       <div class="container">
         <h1>Making Your Own Activity Tracker</h1>
-        <h2></h2>
 
-<h4 class="author"><em>Kenny Darrell</em></h4>
-<h4 class="date"><em>August 30, 2014</em></h4>
+        <h4 class="author"><em>Kenny Darrell</em></h4>
+        <h4 class="date"><em>August 30, 2014</em></h4>
         </section>
       </div>
     </header>
 
-
 <div class="container-fluid">
 
 
-
-
 <div id="background" class="section level3">
+
 <h3>Background</h3>
+
 <p>This post is the culmination of a few ideas. When I was an undergraduate and the the early part of my career where I was an Aerospace Engineer and a Control Systems Engineer I worked with lots of sensors. These sensors streamed in lots of data in the form of measurements of certain features of the real world. This part of the job was really cool. There were other really cool parts as well, I was doing a lot of data mining and machine learning before I even knew what those thing were. There are other parts of being an engineer that I did not like. Going to graduate school and focusing on machine learning and data mining was great. I was immedietly able to find an amazing job where I work on lots of data mining projects.</p>
+
 <p>I very rarely work with data that comes from real world measurements any more. The growing number of sensors coming about from the <a href="http://en.wikipedia.org/wiki/Internet_of_Things">Internet of Things</a> and the <a href="http://en.wikipedia.org/wiki/Quantified_Self">Quantified Self</a> movements have lead to sensors being almost everywhere. There are also many devices that measure aspects realted to your life, <a href="http://www.fitbit.com/">Fitbit</a> and <a href="https://jawbone.com/">Jawbone</a> are good examples. There are also a few Kaggle competetioins which are realted to this, determinig both <a href="http://www.kaggle.com/c/seizure-prediction">Epilepsy</a> and <a href="http://www.kaggle.com/c/predicting-parkinson-s-disease-progression-with-smartphone-data">Parkinson’s</a> related aspects given sensor data. I also watched a few talks at <a href="http://www.kdd.org/kdd2014/">KDD 2014</a> earlier this week which got me thinking a lot as well. This is also very related to my last post abot classifyng time series data.</p>
-<p>Having used some of these devices and seen the data that they create has left me wanting a little more. I am probably not the normal customer though. I started thinking could the device learn what playing basketball looks like or know that I am running as opposed to walking. Could it also push me in some areas, tell me to run faster as I already did this course and am lagging py previous time.</p>
+
+<p>Having used some of these devices and seen the data that they create has left me wanting a little more. I am probably not a normal customer of this data though. I started thinking, could the device learn what playing basketball looks like or know that I am running as opposed to walking. Could it also grade me, tell me when I am out pacing a past outing on this path.</p>
 </div>
+
 <div id="collecting-data" class="section level3">
+
 <h3>Collecting Data</h3>
-<p>My first step was to either find an app or build one that could give me all of the sensor readings on my phone. I was able to find quite a few which is a great place to start. THe one that worked best was Sensor Data Logger. It allows you to toggle different sensors on and off and change the collection rate.</p>
-<p>There is still a lot of work in how to interact with the app. Currently I am emailing a large time window to my laptop which is less than desirable. I think for the long term it would be great to make an app that houses the collection with the analysis but lets ignore the those pain points for now.</p>
-<p>The files that are created are name in the following manner: LOG-YYYY-MM-DD-HH_MM_SS-K330_3-axis_Accelerometer.log.</p>
-<p>These files need a bit of work to to be in a usable format. The first thing to look at is the structure of the file. It has a first line containing ‘— LOG START —’</p>
-<pre class="r"><code>library(lubridate)
+
+
+<p>My first step was to either find an app or build one that could give me readings on all of the sensors in my phone. I was able to find quite a few which were a great starting point. The one that worked best was Sensor Data Logger. It allows you to toggle different sensors on and off and change the collection rate.</p>
+
+
+<p>There is still a lot of work related to interacting with the app. Currently I am emailing a large time window to my laptop which is less than desirable. I think for the longer term it would be great to make an app that houses the collection with the analysis but lets ignore those pain points for now.</p>
+
+
+<p>The files that are created are named in the following manner: LOG-YYYY-MM-DD-HH_MM_SS-K330_3-axis_Accelerometer.log.</p>
+
+<p>These files need a bit of work to be in a usable format. The first thing to look at is the structure of the file. It has a first line containing ‘--- LOG START --- ’</p>
+
+
+<pre class="r"><code>
 
 #x &lt;- readLines('LOG_2014-04-06_20-39-37_Random.log', 1)
 readLines('LOG_2014-08-30_11-59-00K330_3-axis_Accelerometer.log', 1)</code></pre>
@@ -104,7 +114,10 @@ str(loc)</code></pre>
 <div class="separator" style="clear: both; text-align: center;"><img src="sensor.png" height="400" width="550"></a></div>
 
 <p>A few other issues we have with this data are that column one is really the timestamp but it comes in as a character. The V3 field is really an artifact of have a double delimeter in where the optional sensor values come in. We have the same thing with V11 as each line ends with a delimeter. SO we can just remove these two. We should also give the fields some better names.</p>
-<pre class="r"><code>  # There are teo semi colons in a row 
+<pre class="r"><code>  
+
+library(lubridate)
+# There are two semi colons in a row 
   loc$V3 &lt;- NULL
   # The line ends with a semi colon
   loc$V11 &lt;- NULL
