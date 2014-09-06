@@ -179,7 +179,7 @@ plotGPS <- function(path, v = 10) {
 x <- read.log('LOG_2014-08-30_11-59-00K330_3-axis_Accelerometer.log')
 
 
-#plotGPS(x, v = 100)
+plotGPS(x, v = 500)
 plotGPS(x, v = 3000)
 ```
 
@@ -200,7 +200,7 @@ plotGPS(x[seq(1, 5800, 16), ], v = 5900)
 ```{r}
 
 xx <- x[!duplicated(x$LatLong), ]
-plotGPS(xx[seq(1, 1625, 16), ], v = -1)
+plotGPS(xx[seq(1, 1625, 4), ], v = -1)
 
 plotGPS(x[seq(1, 1625, 16), ], v = 1000)
 

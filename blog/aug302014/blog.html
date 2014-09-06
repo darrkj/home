@@ -213,13 +213,13 @@ str(loc)</code></pre>
 x &lt;- read.log('LOG_2014-08-30_11-59-00K330_3-axis_Accelerometer.log')
 
 
-#plotGPS(x, v = 100)
-plotGPS(x, v = 3000)</code></pre>
+plotGPS(x, v = 500)</code></pre>
 <pre><code>## starting httpd help server ... done</code></pre>
+<pre class="r"><code>plotGPS(x, v = 3000)</code></pre>
 <p>It looks like there is an upper limit to the numer of points I can place on the map. I can downsample it by doing the following.</p>
 <pre class="r"><code>plotGPS(x[seq(1, 5800, 16), ], v = 5900)</code></pre>
 <pre class="r"><code>xx &lt;- x[!duplicated(x$LatLong), ]
-plotGPS(xx[seq(1, 1625, 16), ], v = -1)
+plotGPS(xx[seq(1, 1625, 4), ], v = -1)
 
 plotGPS(x[seq(1, 1625, 16), ], v = 1000)</code></pre>
 <p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
