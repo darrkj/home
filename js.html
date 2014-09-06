@@ -1,10 +1,12 @@
 <canvas id="myCanvas" width="400" height="300"></canvas>
 
-<div onclick="clickHandler();">Clicks Here</div>
+<div onclick="clickHandler2();">Clicks Here</div>
+
+<div onclick="clickHandler();">Random</div>
 
 
 <script>
-var mode = 1;
+var mode = 0;
 //Math.floor( Math.random() * 7 )
 var destA = 7;
 var destB = 6;
@@ -44,20 +46,11 @@ for(var i = 0; i < X; i++) {
     }
 }
 
-function clickHandler() {
+
+function clickHandler2() {
   var canvas=document.getElementById('myCanvas');
   var ctx=canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if (mode == 1) {
-    var colA = '#FF0000';
-    var colB = '#0000FF';
-    mode = 0;
-  }
-  else {
-    var colA = '#0000FF';
-    var colB = '#FF0000';
-    mode = 1;
-  }
  
   for(var i = 0; i < X; i++) {
     for(var j = 0; j < Y; j++) {
