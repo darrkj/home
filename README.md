@@ -1,4 +1,4 @@
 home
 ====
 
-[home](http://darrkj.github.io/home/)
+[home](http://darrkj.github.io)
